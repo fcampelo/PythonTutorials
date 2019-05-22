@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introduction to Python</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Introduction to Python',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W06-V01_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W06-V01_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W06-V01_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W06-V01_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W06-V01_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W06-V01_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W06-V01_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W06-V01_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W06-V01_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W06-V01_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W06-V01_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W06-V01_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W06-V01_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li>Introduction to Python</li>
+<li>Anaconda</li>
+<li>Basic programming <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This unit was created with the immense help of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Why Python?</h2></hgroup><article  id="why-python">
+
+<ul>
+<li>According to a <a href='https://www.oreilly.com/ideas/2013-data-science-salary-survey' title=''>2013 survey</a> by learning company O’Reilly, 40 percent of data scientists responding use Python in their day-to-day work.</li>
+<li>These data scientists are not alone - actually they are part of a legion of programmers in all fields of knowledge, who have made Python one of the top ten most popular programming languages in the world every year since 2003.</li>
+<li>Organizations such as Google, NASA, and CERN use Python for almost every programming purpose under the sun - including, in increasing measures, data science.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Why Python?</h2></hgroup><article  id="why-python-1">
+
+<ul>
+<li>According to StackOverflow’s <a href='https://insights.stackoverflow.com/survey/2019' title=''>2019 Developer Survey</a> the top 5 most wanted languages in 2019 are:
+
+<ul>
+<li>Python: 25.7%</li>
+<li>JavaScript: 17.8%</li>
+<li>Go: 15.0%</li>
+<li>TypeScript: 14.6%</li>
+<li>Kotlin: 11.1%</li>
+</ul></li>
+<li>The top most wanted languages are nearly identical to last year’s report.</li>
+<li>Pyhton also features prominently as the second most loved language.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python vs R</h2></hgroup><article  id="python-vs-r">
+
+<ul>
+<li>Being two of the most widely used languages for data science (see <a href='https://medium.com/datadriveninvestor/top-6-data-science-programming-languages-for-2019-39ba1b6819a8' title=''>here</a> and <a href='https://bigdata-madesimple.com/top-8-programming-languages-every-data-scientist-should-master-in-2019/' title=''>here</a>), it is natural to compare Python vs. R in terms of their capabilities and limitations.</li>
+<li>We’ve already covered some of the capabilities offered by R, but there are a few more that need mentioning.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>R</h2></hgroup><article  id="r">
+
+<ul>
+<li>Academics and statisticians have developed R over two decades. R has now one of the richest ecosystems to perform data analysis.</li>
+<li>There are around 12000 packages available in CRAN (and growing by the day). It is possible to find a library for whatever the analysis you want to perform.</li>
+<li>The rich variety of library makes R the first choice for statistical analysis, especially for specialized analytical work.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>R</h2></hgroup><article  id="r-1">
+
+<ul>
+<li>The cutting-edge difference between R and the other statistical products is the output. R (and RStudio in particular) has fantastic tools to communicate the results of data analysis.</li>
+<li>Rstudio offers full integration with the <strong>knitr</strong> package, which makes reporting and reproducible research trivial and elegant.</li>
+<li>Communicating the findings with a presentation or a document is easy (the material you’re reading now, for instance, is generated with <strong>knitr</strong>)</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>R</h2></hgroup><article  id="r-2">
+
+<ul>
+<li>Advantages
+
+<ul>
+<li>Excellent graphical capabilities</li>
+<li>Large catalog for data analysis</li>
+<li>Github interface</li>
+<li>RMarkdown</li>
+<li>Shiny</li>
+<li>A language designed for statistical analysis and data science</li>
+</ul></li>
+<li>Disadvantages
+
+<ul>
+<li>Slow</li>
+<li>Learning curve from hell</li>
+<li>Dependencies between libraries</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python</h2></hgroup><article  id="python">
+
+<ul>
+<li>Python can do pretty much the same tasks as R: data wrangling, feature engineering, web scrapping, and so on.</li>
+<li>Python is a tool to deploy and implement machine learning at a large-scale.</li>
+<li>Codes are easier to maintain and generally considered more robust than R.</li>
+<li>Originally, Python didn’t have many data analysis and machine learning libraries. Recently, however, it has been catching up, and provides cutting-edge API for machine learning or Artificial Intelligence.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python</h2></hgroup><article  id="python-1">
+
+<ul>
+<li>Most data science tasks can be executed with five Python libraries: <strong>Numpy</strong>, <strong>Pandas</strong>, <strong>Scipy</strong>, <strong>Scikit-learn</strong> and <strong>Seaborn</strong>.</li>
+<li>Python is designed for replicability and accessibility. If you need to use the results of your analysis in an application or website, Python tends to be the best choice.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python</h2></hgroup><article  id="python-2">
+
+<ul>
+<li>Advantages
+
+<ul>
+<li>Jupyter notebook: Notebooks help to share data with colleagues</li>
+<li>Mathematical computation</li>
+<li>Deployment</li>
+<li>Code Readability</li>
+<li>Speed</li>
+<li>A general purpose programming language</li>
+</ul></li>
+<li>Disadvantages
+
+<ul>
+<li>Not as many libraries as R</li>
+</ul></li>
+<li>The main differences and similarities between the syntax and outputs of R and Python are discussed <a href='https://www.dataquest.io/blog/python-vs-r/' title=''>here</a>.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python versions</h2></hgroup><article  id="python-versions">
+
+<ul>
+<li>There are currently two different supported versions of Python, 2.7 and 3.7.</li>
+<li>Historically, 2.7 used to be the version of choice for Data Scientists.
+
+<ul>
+<li>Mainly due to more stable versions of packages such as <strong>Numpy</strong>, <strong>Pandas</strong> and <strong>Scikit-learn</strong>.</li>
+</ul></li>
+<li>However, as time has gone on Python 3 has been adopted as the version to use for all things data science.</li>
+<li>Python 2 is now considered a legacy version of the programming language and is due to be retired (read: not actively maintained) on January 1, 2020.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python versions</h2></hgroup><article  id="python-versions-1">
+
+<ul>
+<li>Somewhat atypical of updates to programming languages, Python 3 introduced many backwards-incompatible changes to the language, so code written for 2.7 may not work under the latest versions of Python and vice versa. For this module all code will use Python 3.7.
+
+<ul>
+<li>You can check your Python version at the command line by running <code>python --version</code>.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Anaconda Python</h2></hgroup><article  id="anaconda-python">
+
+<ul>
+<li>While there are several different distributions of Python, we will use the <strong>Anaconda</strong> distribution
+
+<ul>
+<li>makes package maintenance and code deployment easier</li>
+</ul></li>
+<li>The <em>Anaconda Navigator</em> offers, by default, a wide variety of applications, including:
+
+<ul>
+<li>JupyterLab and Jupyter Notebook</li>
+<li>Spyder</li>
+</ul></li>
+<li>It also makes it very simple to lauch RStudio or Visual Tools.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Installing Python</h2></hgroup><article  id="installing-python">
+
+<ul>
+<li>Python installation is generally simple. You can find detailed instructions online at:
+
+<ul>
+<li>Windows:<font size=4> <a href='https://docs.anaconda.com/anaconda/install/windows/' title=''>https://docs.anaconda.com/anaconda/install/windows/</a></font></li>
+<li>Mac: <font size=4><a href='https://docs.anaconda.com/anaconda/install/mac-os/' title=''>https://docs.anaconda.com/anaconda/install/mac-os/</a></font></li>
+<li>Linux: <font size=4><a href='https://docs.anaconda.com/anaconda/install/linux/' title=''>https://docs.anaconda.com/anaconda/install/linux/</a></font></li>
+</ul></li>
+<li>To verify your installation, please check<br/><font size=4><a href='https://docs.anaconda.com/anaconda/install/verify-install/' title=''>https://docs.anaconda.com/anaconda/install/verify-install/</a></font></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Launching Anaconda Navigator</h2></hgroup><article  id="launching-anaconda-navigator">
+
+<ul>
+<li>Windows: from your Windows Start menu, select the shortcut <em>Anaconda Navigator</em> (should be in the &ldquo;Recently added&rdquo;; if not, just type &ldquo;<em>Anaconda Navigator</em>&rdquo;).</li>
+<li>Mac or Linux: open a terminal window and type <code>anaconda-navigator</code>.</li>
+<li>Mac-only: from the <em>Applications</em> folder, click the alias for <em>Anaconda Navigator</em>.
+
+<ul>
+<li>If you want to add a shortcut to the Dock you need to use the original application (usually located under <code>~\anaconda3</code>)</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Anaconda Navigator</h2></hgroup><article  id="anaconda-navigator">
+
+<ul>
+<li>Anaconda Navigator is a laucher for several different Python (and R!) development environments.</li>
+</ul>
+
+<p align="center">
+
+<img src="images/AnacondaNavigator.png" width = "700"></img>
+
+</p>
+
+</article></slide><slide class=""><hgroup><h2>Using Spyder</h2></hgroup><article  id="using-spyder">
+
+<ul>
+<li><strong>Spyder</strong> is a powerful interactive development environment for Python, with advanced editing, interactive testing, and debugging features.</li>
+<li>The homepage for Spyder is <a href='https://www.spyder-ide.org/' title=''>https://www.spyder-ide.org/</a> but if you installed Python using Anaconda, then it should be part of the installation process.</li>
+<li>The name SPYDER derives from &ldquo;Scientific PYthon Development EnviRonment&rdquo; (SPYDER).</li>
+<li>It can be used as the main environment to learn about Python, programming and computational science and engineering.</li>
+<li>Layout and features are similar to RStudio.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Using Spyder</h2></hgroup><article  id="using-spyder-1">
+
+<ul>
+<li>Useful features include
+
+<ul>
+<li>provision of the IPython (Qt) console as an interactive prompt, which can display plots inline</li>
+<li>ability to execute snippets of code from the editor in the console</li>
+<li>continuous parsing of files in editor, and provision of visual warnings about potential errors</li>
+<li>step-by-step execution</li>
+<li>variable explorer similar to RStudio</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Using Spyder</h2></hgroup><article  id="using-spyder-2">
+
+<p align="center">
+
+<img src="images/Spyder.png" width = "800"></img>
+
+</p>
+
+</article></slide><slide class=""><hgroup><h2>Using Jupyter Notebooks</h2></hgroup><article  id="using-jupyter-notebooks">
+
+<ul>
+<li>The Jupyter Notebook is an open source web application that you can use to create and share documents that contain live code, equations, visualizations, and text. Jupyter Notebook is maintained by the people at <a href='https://jupyter.org/' title=''>Project Jupyter</a>.</li>
+<li>Jupyter Notebooks are a spin-off project from the <a href='https://ipython.org/' title=''>IPython project</a>, which used to have an IPython Notebook project itself. The name <em>Jupyter</em> comes from the core supported programming languages that it supports: <strong>Julia</strong>, <strong>Python</strong>, and <strong>R</strong>.</li>
+<li>Jupyter ships with the IPython kernel, which allows you to write your programs in Python, but there are currently over 100 other kernels that you can also use.</li>
+<li>If you installed Python using Anaconda, then it’s likely that the Jupyter Notebook package was installed as part of this. If it wasn’t, just type <code>conda install jupyter</code> on the terminal.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Using IDLE</h2></hgroup><article  id="using-idle">
+
+<ul>
+<li>IDLE is the standard Python development environment. Its name is an acronym of &ldquo;Integrated DeveLopment Environment&rdquo;. It works well on both Unix-based (including Mac OS and, of course, Linux) and Windows platforms.</li>
+<li>It has a Python shell window, which gives you access to the Python interactive mode. It also has a file editor that lets you create and edit existing Python source files.</li>
+<li>You can type Python code directly into this shell, at the &lsquo;&gt;&gt;&gt;&rsquo; prompt. Whenever you enter a complete code fragment, it will be executed.</li>
+<li>Just type <code>IDLE3</code> in the terminal to start an IDLE session using Python 3.X</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Using IDLE</h2></hgroup><article  id="using-idle-1">
+
+<p align="center">
+
+<img src="images/IDLE.png" width = "600"></img>
+
+</p>
+
+</article></slide><slide class=""><hgroup><h2>Modules</h2></hgroup><article  id="modules">
+
+<ul>
+<li>Modules are the Python counterparts to R packages: pre-defined libraries which add additional functionality to base Python installation.</li>
+<li>In order to have access to these libraries they need to be installed. When you install Anaconda several come by default, but it is important to know how to install them.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Installing modules using Anaconda</h2></hgroup><article  id="installing-modules-using-anaconda">
+
+<ul>
+<li>To install a module using Anaconda, just type <code>conda install package-name</code> in the terminal.</li>
+<li>To install a specific version of a module using Anaconda, open the terminal and type e.g.<br> <code>conda install package-name=2.3.4</code></li>
+<li>To list all packages installed using conda, just type <code>conda list</code></li>
+<li>Alternatively, Anaconda Navigator provides the &ldquo;environments&rdquo; tab where you can check all installed modules, install new modules, update/remove existing ones etc.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Installing modules using Anaconda</h2></hgroup><article  id="installing-modules-using-anaconda-1">
+
+<p align="center">
+
+<img src="images/modules.png" width = "700"></img>
+
+</p>
+
+</article></slide><slide class=""><hgroup><h2>Using Pip instead of Conda</h2></hgroup><article  id="using-pip-instead-of-conda">
+
+<ul>
+<li>If you’re a purist, you may prefer not to use Anaconda and instead use a basic installation of Python. If this is the case, your main way for installing packages is using <strong>Pip</strong>.</li>
+<li>To install a module using Pip, open the terminal and type the same commands used for Anaconda, just replacing <code>conda</code> by <code>pip</code>.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>The modules of this module</h2></hgroup><article  id="the-modules-of-this-module">
+
+<ul>
+<li>In this module we will be concentrating on some of the main modules used for data science-related activities:
+
+<ul>
+<li><strong>pandas</strong>, for data wrangling and manipulation</li>
+<li><strong>numpy</strong>, for numerical processing and specific data types</li>
+<li><strong>matplotlib</strong>, for data visualisation</li>
+<li><strong>sklearn</strong>, for modelling</li>
+</ul></li>
+<li>To access the functionalities of any of these modules when we use Python, we just use, e.g., <code>import pandas</code></li>
+<li>Since we need to explicitly declare the module of a given function when it is used in Python, it is very common to import modules using aliases. For instance,<br> <code>import pandas as pd</code></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Some Extra Resources</h2></hgroup><article  id="some-extra-resources">
+
+<ul>
+<li>Python 3.7 Tutorial: <a href='https://docs.python.org/3/tutorial/' title=''>https://docs.python.org/3/tutorial/</a></li>
+<li>The Python Data Science Handbook (free online version): <a href='https://jakevdp.github.io/PythonDataScienceHandbook/' title=''>https://jakevdp.github.io/PythonDataScienceHandbook/</a></li>
+<li>Book: <a href='https://www.amazon.co.uk/Fluent-Python-Luciano-Ramalho/dp/1491946008' title=''>Fluent Python</a></li>
+<li>Book: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
