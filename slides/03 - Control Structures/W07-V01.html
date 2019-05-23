@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Control Structures in Python</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Control Structures in Python',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W07-V01_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W07-V01_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W07-V01_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W07-V01_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W07-V01_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W07-V01_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W07-V01_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W07-V01_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W07-V01_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W07-V01_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W07-V01_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W07-V01_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W07-V01_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li><code>if</code>-<code>else</code> blocks</li>
+<li><code>for</code> and <code>while</code> blocks <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This unit was created with the immense help of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Control structures</h2></hgroup><article  id="control-structures">
+
+<ul>
+<li>As we discussed in an earlier video, control structures play an importat role not only in data science but in any other coding-related activity.</li>
+<li>Python has the same general control structures that we saw in R, the most importat being
+
+<ul>
+<li><code>if-else</code>, for conditional execution</li>
+<li><code>for</code> and <code>while</code> for iterative execution</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>if</code>-<code>else</code> blocks</h2></hgroup><article  id="if-else-blocks">
+
+<ul>
+<li>The general structure of an <code>if</code> statement in Python is:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>if (condition):
+    &lt;code to run if condition is True&gt;
+    &lt;code to run if condition is True&gt;
+    &lt;code to run if condition is True&gt;
+
+&lt;code here runs regardless of the if condition&gt;</pre>
+
+<ul>
+<li>Possibly the most important difference from R is semantic: instead of enclosing the block in curly braces, Python uses indentation to define the scope of <code>if</code> blocks.</li>
+<li>The <code>if(condition)</code> line must always end with <code>:</code> (except for comments, of course)</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>if</code>-<code>else</code> blocks</h2></hgroup><article  id="if-else-blocks-1">
+
+<ul>
+<li>Two other components of <code>if</code> statements exist: <code>else</code> and <code>elif</code> (a conditional <code>else</code>):</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>if (condition1):
+    &lt;code to run if condition1 is True&gt;
+elif (condition2):
+    &lt;code to run if condition1 is False and condition2 is True&gt;
+else:
+  &lt;code to run if both condition1 and condition2 are False&gt;
+  
+&lt;code here runs regardless of conditions 1 and 2&gt;</pre>
+
+<ul>
+<li>Like in R, <code>if-else</code> blocks can be nested
+
+<ul>
+<li>just increase the indentation of the nested blocks.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>if</code>-<code>else</code> blocks</h2></hgroup><article  id="if-else-blocks-2">
+
+<ul>
+<li>Let’s look at a toy problem. Imagine that you want to check the age of a person to see if they are eligible to see a football match based on age.</li>
+<li>Assume the following information:
+
+<ul>
+<li>Children of ages 6 or younger cannot enter the stadium.</li>
+<li>Children between the ages of 6 and 12 (inclusive) can only enter the child-friendly areas.</li>
+<li>Teenagers older than 12 and younger than 16 can enter the stadium accompanied by an adult.</li>
+<li>People who are 17 or older can enter the stadium freely.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>if</code>-<code>else</code> blocks</h2></hgroup><article  id="if-else-blocks-3">
+
+<pre class = 'prettyprint lang-python'>age = 15    # just as an example
+
+if (age &gt;= 17):      # People 17 or older
+    print(&quot;You can enter the stadium freely.&quot;)
+elif (age &gt;= 13):    # People between 13 and younger than 17
+    print(&quot;You can enter the stadium with an adult.&quot;)
+elif (age &gt;= 7):     # People between 7 and 12
+    print(&quot;You can only enter the child-friendly areas of the stadium.&quot;)
+else: 
+    print(&quot;You cannot enter the stadium.&quot;)
+    
+#&gt; You can enter the stadium with an adult.</pre>
+
+</article></slide><slide class=""><hgroup><h2>Nesting <code>if</code>-<code>else</code> blocks</h2></hgroup><article  id="nesting-if-else-blocks">
+
+<pre class = 'prettyprint lang-python'>age = 18    # just as an example
+if (age &lt;= 12):
+    print(&quot;You cannot purchase a ticket.&quot;)
+else:
+    if (age &lt;= 20 or age &gt;= 60):
+        print(&quot;Ticket price is £12.&quot;)
+    else:
+        print(&quot;Ticket price is £20.&quot;)
+    print(&quot;We hope you enjoy the match&quot;) # this prints for anyone over 13
+    
+#&gt; Ticket price is £12.
+#&gt; We hope you enjoy the match</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>for</code> loops</h2></hgroup><article  id="for-loops">
+
+<ul>
+<li><code>for</code> loops iterate over a finite, predefined sequence of values.</li>
+<li>The general structure of a <code>for</code> statement in Python is:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>for &lt;iterator&gt; in &lt;sequence&gt;:
+    &lt;code to run&gt;
+    &lt;code to run&gt;
+    &lt;code to run&gt;
+
+&lt;code here is outside the for loop&gt;</pre>
+
+<ul>
+<li>Just like the <code>if</code> blocks, notice the use of indentation to define the block scope, as well as the use of <code>:</code> to mark the end of the sequence statement.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>for</code> loops</h2></hgroup><article  id="for-loops-1">
+
+<pre class = 'prettyprint lang-python'># One at a time, assign each value of the sequence to i and,
+for i in [432, 342, 928, 920]:
+    # multiply i by 10 and store the product in a new variable, x
+    x = i * 10
+    # print the value of x
+    print(x)
+    
+#&gt; 4320
+#&gt; 3420
+#&gt; 9280
+#&gt; 9200</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>for</code> loops can have an <code>else</code> too!</h2></hgroup><article  id="for-loops-can-have-an-else-too">
+
+<ul>
+<li>An interesting aspect of <code>for</code> loops in Python is that it also features an <code>else</code> clause, which can be pretty useful if you know how to use.</li>
+<li>Essentially, the <code>else</code> clause of <code>for</code> loops executes <em>only</em> when the full <code>for</code> loop finished normally, i.e., did not encounter a <code>break</code> statement.
+
+<ul>
+<li>(yes, Python also has the same <code>break</code> statement as R, which can be used to prematurely exit an iterative loop.)</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>for</code> loops can have an <code>else</code> too!</h2></hgroup><article  id="for-loops-can-have-an-else-too-1">
+
+<ul>
+<li>A quick example (taken from <a href='http://book.pythontips.com/en/latest/for_-_else.html' title=''>here</a>):</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>for n in range(2, 7): # range(a,b) goes from (a) until (b-1)
+    for x in range(2, n):
+        if n % x == 0:     # if &#39;n&#39; is a multiple of &#39;x&#39;
+            str(n) + &#39; = &#39; + str(x) + &#39; x &#39; + str(n/x)
+            break
+            
+#&gt; &#39;4 = 2 x 2&#39;
+#&gt; &#39;6 = 2 x 3&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>for</code> loops can have an <code>else</code> too!</h2></hgroup><article  id="for-loops-can-have-an-else-too-2">
+
+<ul>
+<li>A quick example (taken from <a href='http://book.pythontips.com/en/latest/for_-_else.html' title=''>here</a>):</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>for n in range(2, 7): # range(a,b) goes from (a) until (b-1)
+    for x in range(2, n):
+        if n % x == 0:     # if &#39;n&#39; is a multiple of &#39;x&#39;
+            str(n) + &#39; = &#39; + str(x) + &#39; x &#39; + str(n/x)
+            break
+    else: 
+        # loop fell through without finding a factor
+        str(n) + &#39; is a prime number&#39;
+            
+#&gt; &#39;2 is a prime number&#39;
+#&gt; &#39;3 is a prime number&#39;
+#&gt; &#39;4 = 2 x 2&#39;
+#&gt; &#39;5 is a prime number&#39;
+#&gt; &#39;6 = 2 x 3&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops">
+
+<ul>
+<li><code>while</code> loops iterate a until a certain condition becomes <code>True</code></li>
+<li>The general structure of a <code>while</code> statement in Python is:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>while &lt;condition&gt;:
+    &lt;code to run&gt;
+    &lt;code to run&gt;
+    &lt;code to run&gt;
+
+&lt;code here is outside the while loop&gt;</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops-1">
+
+<pre class = 'prettyprint lang-python'>current_number = 1
+while current_number &lt;= 5:
+    print(current_number)
+    current_number += 1
+#&gt; 1
+#&gt; 2
+#&gt; 3
+#&gt; 4
+#&gt; 5</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops-2">
+
+<ul>
+<li>Some more examples:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>current_number = 0
+while current_number &lt; 10:
+    current_number += 1     # &quot;a += b&quot; is a shortcut for &quot;a = a + b&quot;
+    if current_number % 2 == 0:
+        continue            # continue &#39;breaks&#39; the current iteration
+    print(current_number)
+#&gt; 1
+#&gt; 3
+#&gt; 5
+#&gt; 7
+#&gt; 9</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops-3">
+
+<ul>
+<li>Some more examples:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'># Start with roles that need to be verified
+unconfirmed_roles = [&quot;Il buono&quot;, &quot;il brutto&quot;, &quot;il cattivo&quot;]
+confirmed_roles = []
+
+# Verify each role until there are no more unconfirmed ones.
+while unconfirmed_roles: # a non-empty list is a &#39;True&#39;
+    current_role = unconfirmed_roles.pop() # extracts the last item
+    print(&quot;Verifying role: &quot; + current_role.title())
+    confirmed_roles.append(current_role)
+
+#&gt; Verifying role: Il Cattivo
+#&gt; Verifying role: Il Brutto
+#&gt; Verifying role: Il Buono</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops-4">
+
+<ul>
+<li>Some more examples:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>pets = [&#39;dog&#39;, &#39;none&#39;, &#39;dog&#39;, &#39;goldfish&#39;, &#39;none&#39;, &#39;none&#39;, &#39;cat&#39;]
+print(pets)
+#&gt; [&#39;dog&#39;, &#39;none&#39;, &#39;dog&#39;, &#39;goldfish&#39;, &#39;none&#39;, &#39;none&#39;, &#39;cat&#39;]
+while (&#39;none&#39; in pets): # &#39;a&#39; in &#39;b&#39; =&gt; &#39;b&#39; contains an &#39;a&#39;
+    pets.remove(&#39;none&#39;) # removes the first occurrence of &quot;none&quot; from &quot;pets&quot;
+    print(pets)
+#&gt; [&#39;dog&#39;, &#39;dog&#39;, &#39;goldfish&#39;, &#39;none&#39;, &#39;none&#39;, &#39;cat&#39;]
+#&gt; [&#39;dog&#39;, &#39;dog&#39;, &#39;goldfish&#39;, &#39;none&#39;, &#39;cat&#39;]
+#&gt; [&#39;dog&#39;, &#39;dog&#39;, &#39;goldfish&#39;, &#39;cat&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>while</code> loops</h2></hgroup><article  id="while-loops-5">
+
+<ul>
+<li>Make your computer behave like an 8 year old kid (try at home):</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>prompt = &quot;\nTell me something:&quot;
+message = &quot;&quot;
+# Answer &#39;I quit!&#39; to end the program.
+while message != &#39;I quit!&#39;:
+    message = input(prompt) # Ask the user for input with message &quot;prompt&quot;
+    print(message)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Summary</h2></hgroup><article  id="summary">
+
+<ul>
+<li>Control structures in Python use indentation instead of curly braces to define scope</li>
+<li>Early stop structures (<code>break</code>, <code>continue</code>) can be used to prematurely end a loop or an iteration.</li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
