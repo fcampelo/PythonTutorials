@@ -1,0 +1,310 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: NumPy
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = FALSE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+## Overview
+- The **NumPy** module
+- NumPy arrays, concatenation and splitting
+- Computation on NumPy arrays
+  <br><br>
+- Acknowledgments
+  - This slide deck was heavily inspired on ake VanderPlas' _Python Data Science Handbook_,  [Chapter 2](https://jakevdp.github.io/PythonDataScienceHandbook/02.00-introduction-to-numpy.html)
+  - The unit was developed  with the invaluable help of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  
+  
+  
+## Introducing NumPy
+- NumPy is the fundamental package for scientific computing in Python. 
+- It provides a particularly versatile data type called a _multidimensional array_ (also called an N-dimensional array, `ndarray`), as well as various derived objects (such as masked arrays and matrices)
+- Numpy also provides an assortment of routines for fast operations on arrays, including mathematical and logical operations, shape manipulation, sorting, selecting, I/O, mathematical transforms (such as, e.g., Fourier transforms), basic linear algebra, basic statistical operations, random simulation, and much more.
+
+## Introducing NumPy
+- At the core of the NumPy package is the `ndarray` object, which encapsulates n-dimensional arrays of homogeneous data types
+- Many operations on `ndarray` objects are performed in compiled code (for performance). 
+- NumPy arrays have a fixed size at creation, unlike Python lists (which can grow dynamically). Changing the size of an `ndarray` creates a new array and deletes the original.
+- Elements in a NumPy can only be of a single, homogeneous data type (and thus will be the same size in memory).
+    - Exception: it is possible to have arrays of (Python, including NumPy) objects, thereby allowing for arrays of different sized elements.
+    
+## Introducing NumPy
+- NumPy arrays facilitate advanced mathematical and other types of operations on large numbers of data. Typically, such operations are executed more efficiently and with less code than is possible using Python's built-in sequences.
+- A growing plethora of scientific and mathematical Python-based packages are using NumPy arrays; though these typically support Python-sequence input, they convert such input to NumPy arrays prior to processing, and they often output NumPy arrays. 
+- In other words, in order to efficiently use much (perhaps even most) of today’s scientific/mathematical Python-based software, just knowing how to use Python’s built-in sequence types is insufficient - one also needs to know how to use NumPy arrays.
+
+## Vectorisation and Broadcasting
+- Two of NumPy's features which are the basis of much of its power are vectorization and broadcasting.
+- Vectorization describes the absence of any explicit looping, indexing, etc., in the code - these things are taking place, of course, just "behind the scenes" in optimized, pre-compiled C code.
+- Broadcasting is the term used to describe the implicit element-by-element behavior of operations.
+
+## Vectorisation
+- Vectorized code has many advantages, among which are:
+  - vectorized code is more concise and easier to read
+  - fewer lines of code generally means fewer bugs
+  - the code more closely resembles standard mathematical notation (making it easier, typically, to correctly code mathematical constructs)
+  - vectorization results in more "Pythonic" code. Without vectorization, our code would be littered with inefficient and difficult to read `for` loops.
+
+## Broadcast
+- Generally speaking, in NumPy all operations - not just arithmetic, but also logical, bit-wise, functional, etc. - behave in an element-by-element fashion (which is called _broadcasting_).
+- `a` and `b` could be multidimensional arrays of the same shape, or a scalar and an array, or even two arrays of with different shapes, provided that the smaller array is “expandable” to the shape of the larger in such a way that the resulting broadcast is unambiguous. 
+- For the detailed rules of broadcasting, see [https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html](https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html).
+
+## NumPy and object orientation
+- NumPy fully supports an object-oriented approach, starting, once again, with `ndarray`.
+- `ndarray` is itself a class, possessing numerous methods and attributes. Many of its methods mirror functions in the outermost NumPy namespace, giving the programmer complete freedom to code in whichever paradigm she prefers, and/or which seems most appropriate to the task at hand.
+
+## NumPy arrays
+- If we have a Python list, we can easily greate a NumPy object from it using:
+
+```{python}
+import numpy as np # use np as an alias
+some_numbers = [1, 2, 2, 3, 3, 3]
+my_array = np.array(some_numbers)
+my_array
+```
+
+## `ndarray` attributes
+- To explore the useful array attributes provided by the `ndarray` class, let's start by defining three random arrays with one, two, and three dimensions
+- We'll use NumPy's random number generator.
+```{python}
+np.random.seed(42)  # set seed of the PRNG
+
+x1 = np.random.randint(10, size=6)         # 1D array
+x2 = np.random.randint(10, size=(3, 4))    # 2D array
+x3 = np.random.randint(10, size=(3, 4, 5)) # 3D array
+
+x2 # print x2
+```
+
+## `ndarray` attributes
+- Each array has attributes `ndim` (number of dimensions), `shape` (size of each dimension), and `size` (the total number of elements in the array, i.e., the product of all elements in `shape`)
+- Another useful attribute is the `dtype`, which informs the data type of the elements in the array
+```{python}
+x3.ndim
+x3.shape
+x3.size
+x3.dtype
+```
+
+## Array indexing
+- Indexing in NumPy is very similar to indexing in Python lists. In a one-dimensional array, the _i_-th value (remember that the count starts from _zero_) can be accessed by specifying the desired index in square brackets, just as with Python lists:
+```{python}
+x1
+x1[0]  # first item
+x1[-2] # second-to-last item
+```
+
+## Array indexing
+- In multidimensional arrays, items can be accessed using comma-separated indices:
+```{python}
+x2
+x2[2, 0] # third row, first column
+x2[1, 1] = 9 # to modify a single element
+x2
+```
+
+## Array slicing
+- Square brackets can also be used to access sub-arrays with the _slice_ notation, marked by the colon (:) character. The NumPy slicing syntax follows that of the standard Python list.
+
+```{python}
+x = np.arange(12)
+x
+x[:5]    # first five elements
+x[10:]   # all elements after index 10
+x[4:7]   # a range of values
+x[::3]   # every third element
+x[1::2]  # every other element, starting at index 1
+```
+
+
+## Array slicing
+- If the step value is negative, the defaults for start and stop are swapped.
+- This is a convenient way to reverse an array:
+```{python}
+x[::-1]  # all elements, reversed
+x[5::-2]  # reversed every other from index 5
+```
+
+## Array slicing
+- Multi-dimensional slices work in the same way, and can have multiple slices.
+```{python}
+x2
+x2[:2, :3] # first 2 rows of the first 3 columns
+x2[1, ::2]  # first row, every other column
+```
+
+## Array slicing
+- To extract whole rows or columns, simply `:`.
+```{python}
+x2
+x2[:, 1] # all rows, second column
+x2[0, :] # first row, all columns
+```
+```{python}
+# In the case of row access, the empty slice can be omitted
+x2[0] # same as x2[0, :]
+```
+
+## Slice subarrays are not copies!
+- A very important thing about `ndarray` slices is that they return views rather than copies of the array data.
+```{python}
+x2
+x2_sub = x2[:, 2] # extract the third column
+x2_sub[0] = -1    
+x2
+```
+- This can be useful: when working with large datasets, we can access and process pieces of these datasets without the need to copy the underlying data buffer.
+
+## Reshaping arrays
+- Reshaping an array is essentialy reformatting it with a different dimension sizes. This can be most easily performed using the `reshape` method:
+```{python}
+x = np.arange(1, 10) # integers from 1 to 9, inclusive
+x.reshape((3, 3)) # notice that the argument is a tuple
+```
+- Note that the `size` of the initial array must match that of the reshaped array.
+
+## Reshaping arrays
+- Another common reshaping pattern is the conversion of a one-dimensional array into a two-dimensional row (or column) matrix.
+- In addition to the `reshape` method, this can also be easily done using the `newaxis` keyword within a slice operation:
+```{python}
+x = np.array([1, 2, 3])
+x[np.newaxis, :]
+x[:, np.newaxis]
+```
+
+## Concatenation and splitting
+- Concatenation of two arrays in NumPy is done using `np.concatenate`, `np.vstack`, and `np.hstack`. 
+```{python}
+x = np.array([1, 2, 3])
+y = np.array([3, 2, 1])
+z = np.array([2, 1, 3])
+np.concatenate([x, y, z]) # takes a list/tuple of arrays as argument
+```
+
+## Concatenation and splitting
+- `np.concatenate` also work on 2D (or 3D) arrays
+```{python}
+grid = np.array([[1, 2, 3],
+                 [4, 5, 6]])
+np.concatenate([grid, grid]) 
+```
+```{python}
+# Do it along the second axis
+np.concatenate([grid, grid], axis = 1) 
+```
+
+## Concatenation and splitting
+- For working with arrays of mixed dimensions, it can be clearer to use `np.vstack` (vertical), `np.hstack` (horizontal) instead. 
+- `np.dstack` (depth stacking, for 3D arrays) is also available.
+```{python}
+x = np.array([1, 2, 3])
+np.vstack([grid, x])
+```
+```{python}
+y = np.array([[99], [98]])
+np.hstack([grid, y])
+```
+
+## Concatenation and splitting
+- The opposite of concatenation is splitting, which can be done using `np.split`, `np.hsplit`, and `np.vsplit`. For each of these, we can pass a list of indices giving the split points.
+```{python}
+x = np.arange(10)
+x1, x2, x3, x4, x5 = np.split(x, [2, 4, 6, 8])
+print(x1, x2, x3)
+print(x4, x5)
+```
+
+## Concatenation and splitting
+```{python}
+grid = np.arange(24).reshape((6, 4))
+grid
+g1, g2 = np.vsplit(grid, [3])
+g3, g4 = np.hsplit(grid, [2])
+print(g1)
+print(g3)
+```
+
+## Computation on NumPy arrays
+- One of the most interesting features of NumPy is the availability of vectorized operations, which replace slow loops by what is called _universal functions_, or **ufuncs**.
+- Just like in R, loops tend to be relatively (read: very) slow in Python. This is mainly because of Python's need to do type-checking (and a few associated tasks) every time the function is called.
+- In contrast, when working with compiled code (such as in C or Java) the type is always known beforehand, making the computations more efficient.
+
+## Computation on NumPy arrays
+- For many types of operations, NumPy provides a convenient interface to _vectorize_ operations so that they can be performed behind-the-scenes using compiled code methods. 
+- This vectorized approach is designed to push loops into the compiled layer that underlies NumPy, leading to much faster execution.
+- In most cases this is done so transparently that the user does not even notice.
+
+## Computation on NumPy arrays
+- For instance, suppose you wish to compute the square value of all elements a long numeric array. You can either do an elementwise `for`-loop, or simply:
+```{python}
+import numpy
+long_array = np.random.randint(1, 32, size = 100000)
+squared_vals = long_array ** 2
+long_array[0:5]
+squared_vals[0:5]
+```
+- This can also be done for higher-dimensional arrays.
+
+## Computation on NumPy arrays
+- All common arithmetic operations (`+`, `-`, `*`, `/`, `**`, `//`, `%`) are implemented as _ufuncs_ for NumPy. When combined, they (of course) maintain the standard order of operations.
+- Other functions available as _ufuncs_ include:
+  - Triginometric: `np.sin`/`arcsin`, `np.cos`/`arccos`, `np.tan`/`arctan`
+  - Exponentials (a<sup>x</sup>): `np.exp`, `np.exp2`, , `np.power`
+  - Logarithms: `np.ln`, `np.log2`, `np.log10`
+  - ...
+
+## Computation on NumPy arrays
+- NumPy has many more _ufuncs_ available, including hyperbolic trigonometrics, bitwise arithmetic, comparison operators, angle conversion, rounding, etc.
+- NumPy has a submodule, `scipy.special`, that features a number of these more specialised functions, including gamma and beta functions, error functions, and many others.
+
+## Computation on NumPy arrays
+- For binary _ufuncs_, some interesting aggregates can be computed directly from the object.
+- For example, if we want to _reduce_ an array with a particular operation, it is possible to use the `reduce` method of **any** _ufunc_. A _reduce_ repeatedly applies a given operation to the elements of an array until only a single result remains.
+- For example, calling `reduce` on the add _ufunc_ returns the sum of all elements in the array:
+```{python}
+x = np.arange(1, 11) # [1, 2, ..., 10]
+np.add.reduce(x)
+```
+
+## Computation on NumPy arrays
+- Similarly, `reduce` can be similarly called on any other _ufunc_, e.g., on the `multiply` function (to return a product of all array elements), using `np.multiply.reduce`
+- If the intermediate results are of interest, we can use `accumulate` instead of `reduce`.
+```{python}
+x = np.arange(1, 6) # [1, 2, ..., 5]
+print(np.multiply.reduce(x))
+print(np.multiply.accumulate(x))
+```
+
+
+## Computation on NumPy arrays
+- Finally, any _ufunc_ can also compute the output of all pairs of two different inputs using the `outer` method. For instance, to create a multiplication table you only need:
+```{python}
+x = np.arange(1, 11)
+np.multiply.outer(x, x)
+```
+
+## Summary
+- NumPy provides a very versatily data type, `ndarray`, which powers many of the top Python packages for data science.
+- _ufuncs_ vectorise the execution of element-wise functions on NumPy arrays, increasing efficiency
+- We have only scratched the surface. If you want to lear more (you should!), check the [NumPy documentation](https://docs.scipy.org/doc/), or the full [Chapter 2 of the Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/02.00-introduction-to-numpy.html).
