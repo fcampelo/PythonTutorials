@@ -1,0 +1,156 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Functions
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = FALSE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+## Overview
+- Functions in Python
+  <br><br>
+- Acknowledgments
+  - Some of the examples in this unit are taken from: [Python Crash Course - A Hands-on, Project-based, introduction to programming](https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036)
+  - This unit was created with the immense help of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  - This particular slide deck is also heavily based on DataCamp's [functions tutorial](https://www.datacamp.com/community/tutorials/functions-python-tutorial)
+  
+## Python Functions
+- Just like their R counterparts, a Python functions is a block of organized, reusable code that is used to perform a single, related action.
+- Functions provide better modularity for your application and a high degree of code reusing.
+- As you already know, Python provides many built-in functions (like, e.g., `print()`) but it is also possible to create our own _user-defined functions_.
+- Functions x methods (taken from [here](https://www.datacamp.com/community/tutorials/functions-python-tutorial)):
+  - A _method_ refers to a function which is part of a class. You access it with an instance or object of the class. 
+  - A function doesn't have this restriction: it just refers to a standalone function. This means that all methods are functions, but not all functions are methods.
+
+## Defining a function
+- You can define functions to provide the required functionality. The general structure of a function declaration in Python is as follows:
+
+```{python,eval=FALSE}
+def my_function(<function args>):
+  <function body>
+```
+
+## Defining a function
+- There are some simple rules to define a function in Python.
+  * Function blocks begin with the keyword `def`, followed by the function name, followed by zero or more arguments enclosed in parentheses, followed by `:`
+  * Any input parameters or arguments should be placed within the parentheses.
+  * The first statement of a function can be an optional statement - the documentation string of the function, or _docstring_.
+  * The code block within every function is indented.
+  * The statement `return <expression>` exits a function, optionally passing back an expression to the caller. The absence of a `return` statement (or a `return` statement with no `<expression>`) is the same as `return None`.
+  
+## Defining a function
+```{python}
+# A very simple function
+def HelloWorld():
+  print("Hello, World!")
+HelloWorld()
+```
+```{python,eval=FALSE}
+# A marginally more complex one (try at home)
+def hello():
+  name = str(input("Enter your name: "))
+  if name:
+    print ("Hello " + str(name))
+  else:
+    print("Hello World") 
+hello()
+```
+
+## Defining a function
+- It is also worth mentioning that `return` allows the return of multiple values. To do this, you make use of _tuples_.
+- Tuples are very similar to lists in that they can contain multiple values. However, tuples are **immutable**, which means that you can’t modify its elements once they are created.
+- Tuples are constructed with parentheses, `()`.
+- Tuples can be "unpacked" into multiple variables using one or more commas with the assignment operator.
+
+## Defining a function
+```{python}
+def break_name(fullname):
+  first, last = fullname.split() # unpack a list into two components
+  return (first.title(), last.title())
+
+# Execute break_name() and unpack its output
+firstname, familyname = break_name("felipe campelo")
+firstname
+familyname
+```
+
+## Adding a docstring
+- Docstrings are a particular form of comment describing what your function does (e.g., the computations it performs or the values it returns).
+- These descriptions serve as documentation for your function so that anyone who reads the docstring understands what your function does, without having to trace through all the code in the function definition.
+- Docstrings are placed in the immediate line after the function header, using triple quotation marks.
+```{python}
+def HelloWorld():
+  """Prints 'Hello World!'
+  Returns:
+    None
+  """
+  print("Hello, World!")
+```
+
+## Function arguments
+- User defined functions in Python can take:
+  - Default arguments
+  - Required arguments
+  - Positional and nominal argument passing
+  - Variable number of arguments
+  
+## Function arguments  
+- _Default_ arguments have a predefined value if they are not passed during a function call.
+- Arguments that do not have a default value are considered _required_. Required arguments need to be passed during the function call
+```{python}
+def my_power(base, expo = 2):
+  return base ** expo
+
+my_power(5)
+my_power(5, 3)
+# my_powers()  # <- would generate an error
+```
+
+## Function arguments
+- Just like in R, we can pass arguments to Python functions either positionally or nominally. - The latter is recommended for any function with more than a couple of arguments (for unequivocal code readability)
+```{python}
+def my_poly(x, a = 0, b = 0, c = 0):
+  return a * (x ** 2) + b * x + c
+
+my_poly(12, 1, 4, 7) # argument order may cause confusion
+```
+```{python}
+my_poly(a = 1, b = 4, c = 7, x = 12) # much better.
+```
+
+## Function arguments
+- When we don't know the exact number of arguments that a function may receive, we can use `*args` as our Python counterpart to R's `...`
+- Note that any name starting with `*` would work (doesn't have to be `args`)
+```{python}
+def my_prod(*varargs):
+  x = 1
+  for k in varargs:
+    x *= k
+  return x
+
+my_prod(2,3,4,5)
+```
+
+## Summary
+- User-defined functions in Python can encapsulate code chunks for repeated use as easily as in R.
+- Functions can have zero or more arguments, which can be passed either nominally or positionally. Arguments can also have default values.
+- Variable numbers of arguments can be easily defined using, e.g., `*args`

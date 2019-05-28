@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Python Programming</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Basic Python Programming',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W06-V02_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W06-V02_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W06-V02_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W06-V02_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W06-V02_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W06-V02_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W06-V02_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W06-V02_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W06-V02_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W06-V02_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W06-V02_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W06-V02_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W06-V02_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li>Using Jupyter Notebook</li>
+<li>Basic arithmetic operators in Python <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This unit was created with the immense help of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Setup of our session</h2></hgroup><article  id="setup-of-our-session">
+
+<ul>
+<li>Open Anaconda Navigator and use it to call <em>Jupyter Labs</em></li>
+<li>Once open, we can either start a new console session or a new <em>Notebook</em>.
+
+<ul>
+<li>If you go to the console you can simply type Python code directly. Whenever you enter a complete code fragment and press SHIFT+ENTER it will be executed.</li>
+<li>Generally, however, it is more convenient to use the structured interface of the <em>Notebooks</em>, so we’ll start from there.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Working with strings</h2></hgroup><article  id="working-with-strings">
+
+<ul>
+<li>The most straightforward output command is the print statement, for example:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>print(&quot;Hello World&quot;)
+#&gt; Hello World</pre>
+
+<ul>
+<li>Simple quotes work too:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>print(&#39;Hi there!&#39;)
+#&gt; Hi there!</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with strings</h2></hgroup><article  id="working-with-strings-1">
+
+<ul>
+<li>Strings can be assigned to variables (assignment uses <code>=</code>) to be later used in a function:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>a = &quot;my string&quot;
+print(a)
+#&gt; my string</pre>
+
+</article></slide><slide class=""><hgroup><h2>String methods</h2></hgroup><article  id="string-methods">
+
+<ul>
+<li>We can do several useful things with strings by calling methods which manipulate strings.</li>
+<li>Methods are functions that are associated with a certain object class.</li>
+<li>We call methods using <code>VarName.Method()</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>name = &quot;Felipe Campelo Franca PINTO&quot;
+name.lower() # lowercase
+#&gt; &#39;felipe campelo franca pinto&#39;
+name.upper() # uppercase
+#&gt; &#39;FELIPE CAMPELO FRANCA PINTO&#39;
+name.title() # title capitalisation
+#&gt; &#39;Felipe Campelo Franca Pinto&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Concatenating and replicating strings</h2></hgroup><article  id="concatenating-and-replicating-strings">
+
+<ul>
+<li>Strings can be easily concatenated:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>first_name = &quot;felipe&quot;
+last_name  = &quot;campelo&quot;
+name = first_name + &quot; &quot; + last_name # the space is important here ;-)
+name.title() # to capitalise it properly
+#&gt; &#39;Felipe Campelo&#39;</pre>
+
+<ul>
+<li>We can also replicate a string using &ldquo;multiplication&rdquo;</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>3 * first_name
+#&gt; &#39;felipefelipefelipe&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Concatenating and replicating strings</h2></hgroup><article  id="concatenating-and-replicating-strings-1">
+
+<ul>
+<li>To combine numbers and strings, you need to explicitly cast the former to a string object.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>age = 40
+&quot;Happy &quot; + str(age) + &quot;th birthday!&quot;
+#&gt; &#39;Happy 40th birthday!&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Some final remarks</h2></hgroup><article  id="some-final-remarks">
+
+<ul>
+<li>Commenting is as important in Python as it is in R. The commenting character here is also <code>#</code>: the Python interpreter ignores everything after one or more <code>#</code> symbols</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>1 + 1 + 1 + 1 + 1 + 1
+#&gt; 6
+1 + 1 + 1 + 1# + 1 + 1
+#&gt; 4
+1 #+ 1 + #1 + 1 + 1 + 1
+#&gt; 1</pre>
+
+<ul>
+<li>Commenting is useful when anyone else wants to understand what you did in your code. This <em>someone else</em> may even be your future self, so don’t forget to <strong>always comment your code!</strong></li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

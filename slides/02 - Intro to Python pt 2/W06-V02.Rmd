@@ -1,0 +1,102 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Basic Python Programming
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = TRUE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+## Overview
+- Using Jupyter Notebook
+- Basic arithmetic operators in Python
+<br><br>
+- Acknowledgments
+  - Some of the examples in this unit are taken from: [Python Crash Course - A Hands-on, Project-based, introduction to programming](https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036)
+  - This unit was created with the immense help of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  
+## Setup of our session
+- Open Anaconda Navigator and use it to call _Jupyter Labs_
+- Once open, we can either start a new console session or a new _Notebook_.
+  - If you go to the console you can simply type Python code directly. Whenever you enter a complete code fragment and press SHIFT+ENTER it will be executed. 
+  - Generally, however, it is more convenient to use the structured interface of the _Notebooks_, so we'll start from there.
+
+## Working with strings
+- The most straightforward output command is the print statement, for example:
+```{python}
+print("Hello World")
+```
+
+- Simple quotes work too:
+```{python}
+print('Hi there!')
+```
+
+## Working with strings
+- Strings can be assigned to variables (assignment uses `=`) to be later used in a function:
+```{python}
+a = "my string"
+print(a)
+```
+
+
+## String methods
+- We can do several useful things with strings by calling methods which manipulate strings.
+- Methods are functions that are associated with a certain object class. 
+- We call methods using `VarName.Method()`
+```{python}
+name = "Felipe Campelo Franca PINTO"
+name.lower() # lowercase
+
+name.upper() # uppercase
+
+name.title() # title capitalisation
+```
+
+## Concatenating and replicating strings
+- Strings can be easily concatenated:
+```{python}
+first_name = "felipe"
+last_name  = "campelo"
+name = first_name + " " + last_name # the space is important here ;-)
+name.title() # to capitalise it properly
+```
+
+- We can also replicate a string using "multiplication"
+```{python}
+3 * first_name
+```
+
+## Concatenating and replicating strings
+- To combine numbers and strings, you need to explicitly cast the former to a string object.
+```{python}
+age = 40
+"Happy " + str(age) + "th birthday!"
+```
+
+## Some final remarks
+- Commenting is as important in Python as it is in R. The commenting character here is also `#`: the Python interpreter ignores everything after one or more `#` symbols
+```{python}
+1 + 1 + 1 + 1 + 1 + 1
+1 + 1 + 1 + 1# + 1 + 1
+1 #+ 1 + #1 + 1 + 1 + 1
+```
+- Commenting is useful when anyone else wants to understand what you did in your code. This _someone else_ may even be your future self, so don't forget to **always comment your code!**

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Functions</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Functions',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W07-V03_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W07-V03_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W07-V03_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W07-V03_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W07-V03_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W07-V03_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W07-V03_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W07-V03_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W07-V03_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W07-V03_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W07-V03_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W07-V03_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W07-V03_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li>Functions in Python <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This unit was created with the immense help of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+<li>This particular slide deck is also heavily based on DataCamp’s <a href='https://www.datacamp.com/community/tutorials/functions-python-tutorial' title=''>functions tutorial</a></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python Functions</h2></hgroup><article  id="python-functions">
+
+<ul>
+<li>Just like their R counterparts, a Python functions is a block of organized, reusable code that is used to perform a single, related action.</li>
+<li>Functions provide better modularity for your application and a high degree of code reusing.</li>
+<li>As you already know, Python provides many built-in functions (like, e.g., <code>print()</code>) but it is also possible to create our own <em>user-defined functions</em>.</li>
+<li>Functions x methods (taken from <a href='https://www.datacamp.com/community/tutorials/functions-python-tutorial' title=''>here</a>):
+
+<ul>
+<li>A <em>method</em> refers to a function which is part of a class. You access it with an instance or object of the class.</li>
+<li>A function doesn’t have this restriction: it just refers to a standalone function. This means that all methods are functions, but not all functions are methods.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Defining a function</h2></hgroup><article  id="defining-a-function">
+
+<ul>
+<li>You can define functions to provide the required functionality. The general structure of a function declaration in Python is as follows:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>def my_function(&lt;function args&gt;):
+  &lt;function body&gt;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Defining a function</h2></hgroup><article  id="defining-a-function-1">
+
+<ul>
+<li>There are some simple rules to define a function in Python.
+
+<ul>
+<li>Function blocks begin with the keyword <code>def</code>, followed by the function name, followed by zero or more arguments enclosed in parentheses, followed by <code>:</code></li>
+<li>Any input parameters or arguments should be placed within the parentheses.</li>
+<li>The first statement of a function can be an optional statement - the documentation string of the function, or <em>docstring</em>.</li>
+<li>The code block within every function is indented.</li>
+<li>The statement <code>return &lt;expression&gt;</code> exits a function, optionally passing back an expression to the caller. The absence of a <code>return</code> statement (or a <code>return</code> statement with no <code>&lt;expression&gt;</code>) is the same as <code>return None</code>.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Defining a function</h2></hgroup><article  id="defining-a-function-2">
+
+<pre class = 'prettyprint lang-python'># A very simple function
+def HelloWorld():
+  print(&quot;Hello, World!&quot;)
+HelloWorld()
+#&gt; Hello, World!</pre>
+
+<pre class = 'prettyprint lang-python'># A marginally more complex one (try at home)
+def hello():
+  name = str(input(&quot;Enter your name: &quot;))
+  if name:
+    print (&quot;Hello &quot; + str(name))
+  else:
+    print(&quot;Hello World&quot;) 
+hello()</pre>
+
+</article></slide><slide class=""><hgroup><h2>Defining a function</h2></hgroup><article  id="defining-a-function-3">
+
+<ul>
+<li>It is also worth mentioning that <code>return</code> allows the return of multiple values. To do this, you make use of <em>tuples</em>.</li>
+<li>Tuples are very similar to lists in that they can contain multiple values. However, tuples are <strong>immutable</strong>, which means that you can’t modify its elements once they are created.</li>
+<li>Tuples are constructed with parentheses, <code>()</code>.</li>
+<li>Tuples can be &ldquo;unpacked&rdquo; into multiple variables using one or more commas with the assignment operator.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Defining a function</h2></hgroup><article  id="defining-a-function-4">
+
+<pre class = 'prettyprint lang-python'>def break_name(fullname):
+  first, last = fullname.split() # unpack a list into two components
+  return (first.title(), last.title())
+
+# Execute break_name() and unpack its output
+firstname, familyname = break_name(&quot;felipe campelo&quot;)
+firstname
+#&gt; &#39;Felipe&#39;
+familyname
+#&gt; &#39;Campelo&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Adding a docstring</h2></hgroup><article  id="adding-a-docstring">
+
+<ul>
+<li>Docstrings are a particular form of comment describing what your function does (e.g., the computations it performs or the values it returns).</li>
+<li>These descriptions serve as documentation for your function so that anyone who reads the docstring understands what your function does, without having to trace through all the code in the function definition.</li>
+<li>Docstrings are placed in the immediate line after the function header, using triple quotation marks.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>def HelloWorld():
+  &quot;&quot;&quot;Prints &#39;Hello World!&#39;
+  Returns:
+    None
+  &quot;&quot;&quot;
+  print(&quot;Hello, World!&quot;)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Function arguments</h2></hgroup><article  id="function-arguments">
+
+<ul>
+<li>User defined functions in Python can take:
+
+<ul>
+<li>Default arguments</li>
+<li>Required arguments</li>
+<li>Positional and nominal argument passing</li>
+<li>Variable number of arguments</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Function arguments</h2></hgroup><article  id="function-arguments-1">
+
+<ul>
+<li><em>Default</em> arguments have a predefined value if they are not passed during a function call.</li>
+<li>Arguments that do not have a default value are considered <em>required</em>. Required arguments need to be passed during the function call</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>def my_power(base, expo = 2):
+  return base ** expo
+
+my_power(5)
+#&gt; 25
+my_power(5, 3)
+# my_powers()  # &lt;- would generate an error
+#&gt; 125</pre>
+
+</article></slide><slide class=""><hgroup><h2>Function arguments</h2></hgroup><article  id="function-arguments-2">
+
+<ul>
+<li>Just like in R, we can pass arguments to Python functions either positionally or nominally. - The latter is recommended for any function with more than a couple of arguments (for unequivocal code readability)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>def my_poly(x, a = 0, b = 0, c = 0):
+  return a * (x ** 2) + b * x + c
+
+my_poly(12, 1, 4, 7) # argument order may cause confusion
+#&gt; 199</pre>
+
+<pre class = 'prettyprint lang-python'>my_poly(a = 1, b = 4, c = 7, x = 12) # much better.
+#&gt; 199</pre>
+
+</article></slide><slide class=""><hgroup><h2>Function arguments</h2></hgroup><article  id="function-arguments-3">
+
+<ul>
+<li>When we don’t know the exact number of arguments that a function may receive, we can use <code>*args</code> as our Python counterpart to R’s <code>...</code></li>
+<li>Note that any name starting with <code>*</code> would work (doesn’t have to be <code>args</code>)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>def my_prod(*varargs):
+  x = 1
+  for k in varargs:
+    x *= k
+  return x
+
+my_prod(2,3,4,5)
+#&gt; 120</pre>
+
+</article></slide><slide class=""><hgroup><h2>Summary</h2></hgroup><article  id="summary">
+
+<ul>
+<li>User-defined functions in Python can encapsulate code chunks for repeated use as easily as in R.</li>
+<li>Functions can have zero or more arguments, which can be passed either nominally or positionally. Arguments can also have default values.</li>
+<li>Variable numbers of arguments can be easily defined using, e.g., <code>*args</code></li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

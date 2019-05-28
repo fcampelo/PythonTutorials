@@ -1,0 +1,346 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Lists and Dictionaries
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = FALSE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+## Overview
+- Creating, accessing and modifying lists
+- Dictionaries
+  <br><br>
+- Acknowledgments
+  - Some of the examples in this unit are taken from: [Python Crash Course - A Hands-on, Project-based, introduction to programming](https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036)
+  - This unit was created with the immense help of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  
+## Python Lists
+- Python has a built-in list type, aptly named "list". 
+- List literals are written within square brackets, `[ ]`.
+- Lists work similarly to strings (and to R vectors) - we can use square brackets `[ ]` to access data
+- Unlike R (and like C and several other languages) indexing in Python starts at zero.
+```{python}
+colors = ['red', 'blue', 'green']
+```
+<br>
+<p align="center"><img src="images/list1.png" width = "500"></img></p>
+<p align="right"><font size=3> Example and image from [https://developers.google.com/edu/python/lists](https://developers.google.com/edu/python/lists)</font></p>
+
+## Python Lists
+```{python}
+colors = ['red', 'blue', 'green']
+for i in range(0, 3): # range(0,3) = [0, 1, 2]
+  print(colors[i])
+  
+print len(colors) # length of the "colors" list
+
+
+```
+
+## Python Lists
+- Assignment with `=` on a list object **does not make a copy**. Instead, it generates two variables pointing to the one list in memory. 
+```{python}
+colors = ['red', 'blue', 'green']
+other = colors
+other[0] = "yellow"
+print(colors)
+```
+<br>
+<p align="center"><img src="images/list2.png" width = "500"></img></p>
+<p align="right"><font size=3> Example and image from [https://developers.google.com/edu/python/lists](https://developers.google.com/edu/python/lists)</font></p>
+
+## Python Lists
+- You can generate an actual copy in a variety of ways, e.g.:
+```{python}
+colors = ['red', 'blue', 'green']
+other = colors[:] # This is called the "slicing" method
+other[0] = "yellow"
+print(colors)
+print(other)
+```
+
+## Working with lists
+- Defining lists is simple. Square brackets indicate the start and end of the list and commas separate the items.
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+print(bicycles)
+```
+- You can put any data types in a list (and even mix a bit!)
+```{python}
+numbers = [5, 4, 3, 2, 1]
+print(numbers)
+
+mix_list = [True, "hi", 34, 3.141592]
+print(mix_list)
+```
+
+## Working with lists
+- You can access elements in a list by their indices. Note the index starts at `0`, not `1`.
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+print(bicycles[0])
+```
+
+- If you use negative indices you start accessing the list in reverse order, starting from the last element (which is `mylist[-1]`) 
+```{python, dependson="bikes"}
+print(bicycles[-1])
+```
+
+## Working with lists
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+print(bicycles)
+```
+```{python}
+bicycles[0] = 'marin' # Replace the first element 
+
+message = "My first bicycle was a " + bicycles[0].title() + '.'
+print(message)
+```
+
+## Working with lists
+- We can grow a list using the `append()` method, which allows us to build lists dynamically.
+- The `insert()` method allows us to insert new elements anywhere (not only at the end)
+```{python}
+bicycles = [] # This makes an empty list
+print(bicycles)
+bicycles.append('trek')
+bicycles.append('cannondale')
+print(bicycles)
+bicycles += ['redline', 'specialized'] # Another way to append
+print(bicycles)
+bicycles.insert(1, 'marin') # Inserts this bike at index 1
+print(bicycles)
+```
+
+## Working with lists
+- You can also remove items from a list using the `del` statement
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+print(bicycles)
+del bicycles[2]
+print(bicycles)
+```
+
+## Working with lists
+- Sometimes you'll want to use the value after you've deleted it from the list.
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+popped_bike = bicycles.pop()
+print(bicycles)
+print(popped_bike)
+```
+```{python}
+# You can pop from any index in the list.
+popped_bike = bicycles.pop(1)
+print(bicycles)
+print(popped_bike)
+```
+
+## Working with lists
+- You can also remove an item by value
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+print(bicycles)
+```
+```{python}
+bicycles.remove("cannondale")
+print(bicycles)
+```
+
+## Working with lists
+- We can sort lists with the `sort()` and `reverse()` methods. Note both these methods permanently sort the list, and there is no way to go back to the original order.
+
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+bicycles.sort()
+print(bicycles)
+```
+```{python}
+bicycles.reverse()
+print(bicycles)
+```
+
+## Working with lists
+- If we want to sort a list temporarily, we can use the `sorted()` function.
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+print('Unsorted List')
+print(bicycles)
+```
+```{python}
+print('Sorted List')
+print(sorted(bicycles))
+```
+```{python}
+print('Unsorted List')
+print(bicycles)
+```
+
+## Working with lists
+- If we put this together we some of the loop statements we saw earlier, we can interate through lists. Here is a simple example.
+```{python}
+bicycles = ['trek', 'cannondale', 'redline', 'specialized']
+for bike in bicycles:
+    if(len(bike) <= 7):
+      print("This bike has a shorter name:\t" + bike)
+    else:
+      print("This bike has a longer name:\t\t" + bike)
+```
+
+## Dictionaries
+- Dictionaries are another way in which we can store data.
+- The key difference between dictionaries and lists is that dictionaries are _unordered_ sets of `key:value` pairs - instead of accessing data by an index, we do it using field names. 
+  - For example, `firstName` would be a key and `"Felipe"` would be the value.
+- In Python dictionaries: 
+  - each key is separated from its value by a `:`, 
+  - the `key:value` pairs are separated by commas
+  - the whole thing is enclosed in curly braces. 
+
+## Dictionaries
+- An empty dictionary without any items is written with just two curly braces, `{}`.
+- Keys are unique within a dictionary, while values need not be.
+- The values of a dictionary can be of any type, but the keys must be of an **immutable** data type such as strings, numbers, or tuples.
+  - (mutable objects have fields that can be changed, immutable objects have no fields that can be changed after the object is created.)
+
+## Dictionaries
+- A few examples of dictionaries (adapted from [here](https://www.python-course.eu/dictionaries.php)) are:
+```{python}
+empty = {} # an empty dictionary
+empty
+```
+```{python}
+# from Monty Python's famous "Spam" number
+food = {"ham" : "yes", "egg" : "yes", "spam" : "no" }
+food
+```
+```{python}
+food["spam"] # Use key to access/modify value
+food["spam"] = "yes"
+food
+```
+
+## Working with dictionaries
+```{python}
+alien_0 = {'color': 'green', 'points': 5}
+alien_0
+```
+```{python}
+alien_0['x_position'] = 0   # add a new key:value pair
+alien_0['y_position'] = 25  # add a new key:value pair
+alien_0
+```
+
+## Working with dictionaries
+```{python}
+# Lets put this all together. Here we are moving the alien a certain
+# amount on the x axis based on the  'speed' rating we have given it.
+alien_0 = {'x_position': 0, 'y_position': 25, 'speed': 'medium'}
+print("Original x-position: " + str(alien_0['x_position']))
+```
+```{python}
+# Move the alien based on its current speed.
+if alien_0['speed'] == 'slow':
+    x_increment = 1
+elif alien_0['speed'] == 'medium':
+    x_increment = 2
+else: # a very fast alien.
+    x_increment = 3
+# new position = old position + increment.
+alien_0['x_position'] += x_increment
+print("New x-position: " + str(alien_0['x_position']))
+```
+
+## Working with dictionaries
+- `key:value` pairs can be deleted in the same way we delete list entries.
+```{python}
+alien_0 = {'color': 'green', 'points': 5}
+print(alien_0)
+```
+```{python}
+del alien_0['points']
+print(alien_0)
+```
+
+## Working with dictionaries
+- We can loop over a dictionary using the `items()` method.
+```{python}
+user_0 = {
+'login': 'fcampelo',
+'first': 'felipe',
+'last': 'campelo'
+}
+# notice that we can have multiple iterating variables, 
+# and that dictionaries are *unordered*
+for key, value in user_0.items(): 
+    print("\nKey: " + key + "\tValue: " + value)
+```
+
+## Working with dictionaries
+- Sometimes we will only need to loop through keys and not values (or vice versa)
+```{python}
+user_0 = {'login': 'fcampelo', 'first': 'felipe', 'last': 'campelo'}
+for key in user_0.keys():
+    print(key.title())
+```
+```{python}
+for value in user_0.values():
+    print(value.upper())
+```
+
+## Working with dictionaries
+- You can update dictionaries using the `.update()` method:
+```{python}
+w = {"house":"Haus","cat":"Katze","red":"rot"}
+w1 = {"red":"rouge","blau":"bleu"}
+w.update(w1)
+print(w)
+```
+
+## Lists of dictionaries
+```{python}
+alien_0 = {'color': 'green', 'points': 5}
+alien_1 = {'color': 'yellow', 'points': 10}
+alien_2 = {'color': 'red', 'points': 15}
+aliens = [alien_0, alien_1, alien_2]
+
+for alien in aliens:
+    print(alien)
+```
+
+## Nested dictionaries
+```{python}
+users = {
+    'aeinstein': {'first': 'albert','last': 'einstein','location': 'princeton'},
+    'mcurie': {'first': 'marie','last': 'curie','location': 'paris',}}
+
+for username, user_info in users.items():
+    print("\nUsername: " + username)
+    full_name = user_info['first'] + " " + user_info['last']
+    location = user_info['location']
+    print("\tFull name: " + full_name.title() + "\tLocation: " + location.title())
+```
+
+## Summary
+- Lists and dictionaries are two very useful and very flexible data types provided by Python.
+- You can nest these structures - lists of lists, lists of dictionaries, dictionaries of dictionaries, etc.
+- Lists are ordered objects and can be accessed by index, while dictionaries are unordered `key:value` pairs that are accessed using the keys.

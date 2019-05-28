@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lists and Dictionaries</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Lists and Dictionaries',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W07-V02_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W07-V02_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W07-V02_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W07-V02_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W07-V02_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W07-V02_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W07-V02_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W07-V02_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W07-V02_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W07-V02_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W07-V02_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W07-V02_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W07-V02_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li>Creating, accessing and modifying lists</li>
+<li>Dictionaries <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This unit was created with the immense help of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Python Lists</h2></hgroup><article  id="python-lists">
+
+<ul>
+<li>Python has a built-in list type, aptly named &ldquo;list&rdquo;.</li>
+<li>List literals are written within square brackets, <code>[ ]</code>.</li>
+<li>Lists work similarly to strings (and to R vectors) - we can use square brackets <code>[ ]</code> to access data</li>
+<li>Unlike R (and like C and several other languages) indexing in Python starts at zero.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>colors = [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]</pre>
+
+<br>
+
+<p align="center">
+
+<img src="images/list1.png" width = "500"></img>
+
+</p>
+
+<p align="right">
+
+<font size=3> Example and image from <a href='https://developers.google.com/edu/python/lists' title=''>https://developers.google.com/edu/python/lists</a></font>
+
+</p>
+
+</article></slide><slide class=""><hgroup><h2>Python Lists</h2></hgroup><article  id="python-lists-1">
+
+<pre class = 'prettyprint lang-python'>colors = [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]
+for i in range(0, 3): # range(0,3) = [0, 1, 2]
+  print(colors[i])
+  
+#&gt; red
+#&gt; blue
+#&gt; green
+print len(colors) # length of the &quot;colors&quot; list
+
+#&gt; 3</pre>
+
+</article></slide><slide class=""><hgroup><h2>Python Lists</h2></hgroup><article  id="python-lists-2">
+
+<ul>
+<li>Assignment with <code>=</code> on a list object <strong>does not make a copy</strong>. Instead, it generates two variables pointing to the one list in memory.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>colors = [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]
+other = colors
+other[0] = &quot;yellow&quot;
+print(colors)
+#&gt; [&#39;yellow&#39;, &#39;blue&#39;, &#39;green&#39;]</pre>
+
+<br>
+
+<p align="center">
+
+<img src="images/list2.png" width = "500"></img>
+
+</p>
+
+<p align="right">
+
+<font size=3> Example and image from <a href='https://developers.google.com/edu/python/lists' title=''>https://developers.google.com/edu/python/lists</a></font>
+
+</p>
+
+</article></slide><slide class=""><hgroup><h2>Python Lists</h2></hgroup><article  id="python-lists-3">
+
+<ul>
+<li>You can generate an actual copy in a variety of ways, e.g.:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>colors = [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]
+other = colors[:] # This is called the &quot;slicing&quot; method
+other[0] = &quot;yellow&quot;
+print(colors)
+#&gt; [&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;]
+print(other)
+#&gt; [&#39;yellow&#39;, &#39;blue&#39;, &#39;green&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists">
+
+<ul>
+<li>Defining lists is simple. Square brackets indicate the start and end of the list and commas separate the items.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+<ul>
+<li>You can put any data types in a list (and even mix a bit!)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>numbers = [5, 4, 3, 2, 1]
+print(numbers)
+#&gt; [5, 4, 3, 2, 1]
+mix_list = [True, &quot;hi&quot;, 34, 3.141592]
+print(mix_list)
+#&gt; [True, &#39;hi&#39;, 34, 3.141592]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-1">
+
+<ul>
+<li>You can access elements in a list by their indices. Note the index starts at <code>0</code>, not <code>1</code>.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+print(bicycles[0])
+#&gt; trek</pre>
+
+<ul>
+<li>If you use negative indices you start accessing the list in reverse order, starting from the last element (which is <code>mylist[-1]</code>)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>print(bicycles[-1])
+#&gt; specialized</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-2">
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+<pre class = 'prettyprint lang-python'>bicycles[0] = &#39;marin&#39; # Replace the first element 
+
+message = &quot;My first bicycle was a &quot; + bicycles[0].title() + &#39;.&#39;
+print(message)
+#&gt; My first bicycle was a Marin.</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-3">
+
+<ul>
+<li>We can grow a list using the <code>append()</code> method, which allows us to build lists dynamically.</li>
+<li>The <code>insert()</code> method allows us to insert new elements anywhere (not only at the end)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [] # This makes an empty list
+print(bicycles)
+#&gt; []
+bicycles.append(&#39;trek&#39;)
+bicycles.append(&#39;cannondale&#39;)
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;]
+bicycles += [&#39;redline&#39;, &#39;specialized&#39;] # Another way to append
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+bicycles.insert(1, &#39;marin&#39;) # Inserts this bike at index 1
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;marin&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-4">
+
+<ul>
+<li>You can also remove items from a list using the <code>del</code> statement</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+del bicycles[2]
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;specialized&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-5">
+
+<ul>
+<li>Sometimes you’ll want to use the value after you’ve deleted it from the list.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+popped_bike = bicycles.pop()
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;]
+print(popped_bike)
+#&gt; specialized</pre>
+
+<pre class = 'prettyprint lang-python'># You can pop from any index in the list.
+popped_bike = bicycles.pop(1)
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;redline&#39;]
+print(popped_bike)
+#&gt; cannondale</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-6">
+
+<ul>
+<li>You can also remove an item by value</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+<pre class = 'prettyprint lang-python'>bicycles.remove(&quot;cannondale&quot;)
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-7">
+
+<ul>
+<li>We can sort lists with the <code>sort()</code> and <code>reverse()</code> methods. Note both these methods permanently sort the list, and there is no way to go back to the original order.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+bicycles.sort()
+print(bicycles)
+#&gt; [&#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;, &#39;trek&#39;]</pre>
+
+<pre class = 'prettyprint lang-python'>bicycles.reverse()
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;specialized&#39;, &#39;redline&#39;, &#39;cannondale&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-8">
+
+<ul>
+<li>If we want to sort a list temporarily, we can use the <code>sorted()</code> function.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+print(&#39;Unsorted List&#39;)
+#&gt; Unsorted List
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+<pre class = 'prettyprint lang-python'>print(&#39;Sorted List&#39;)
+#&gt; Sorted List
+print(sorted(bicycles))
+#&gt; [&#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;, &#39;trek&#39;]</pre>
+
+<pre class = 'prettyprint lang-python'>print(&#39;Unsorted List&#39;)
+#&gt; Unsorted List
+print(bicycles)
+#&gt; [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with lists</h2></hgroup><article  id="working-with-lists-9">
+
+<ul>
+<li>If we put this together we some of the loop statements we saw earlier, we can interate through lists. Here is a simple example.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>bicycles = [&#39;trek&#39;, &#39;cannondale&#39;, &#39;redline&#39;, &#39;specialized&#39;]
+for bike in bicycles:
+    if(len(bike) &lt;= 7):
+      print(&quot;This bike has a shorter name:\t&quot; + bike)
+    else:
+      print(&quot;This bike has a longer name:\t\t&quot; + bike)
+#&gt; This bike has a shorter name:    trek
+#&gt; This bike has a longer name:     cannondale
+#&gt; This bike has a shorter name:    redline
+#&gt; This bike has a longer name:     specialized</pre>
+
+</article></slide><slide class=""><hgroup><h2>Dictionaries</h2></hgroup><article  id="dictionaries">
+
+<ul>
+<li>Dictionaries are another way in which we can store data.</li>
+<li>The key difference between dictionaries and lists is that dictionaries are <em>unordered</em> sets of <code>key:value</code> pairs - instead of accessing data by an index, we do it using field names.
+
+<ul>
+<li>For example, <code>firstName</code> would be a key and <code>&quot;Felipe&quot;</code> would be the value.</li>
+</ul></li>
+<li>In Python dictionaries:
+
+<ul>
+<li>each key is separated from its value by a <code>:</code>,</li>
+<li>the <code>key:value</code> pairs are separated by commas</li>
+<li>the whole thing is enclosed in curly braces.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Dictionaries</h2></hgroup><article  id="dictionaries-1">
+
+<ul>
+<li>An empty dictionary without any items is written with just two curly braces, <code>{}</code>.</li>
+<li>Keys are unique within a dictionary, while values need not be.</li>
+<li>The values of a dictionary can be of any type, but the keys must be of an <strong>immutable</strong> data type such as strings, numbers, or tuples.
+
+<ul>
+<li>(mutable objects have fields that can be changed, immutable objects have no fields that can be changed after the object is created.)</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Dictionaries</h2></hgroup><article  id="dictionaries-2">
+
+<ul>
+<li>A few examples of dictionaries (adapted from <a href='https://www.python-course.eu/dictionaries.php' title=''>here</a>) are:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>empty = {} # an empty dictionary
+empty
+#&gt; {}</pre>
+
+<pre class = 'prettyprint lang-python'># from Monty Python&#39;s famous &quot;Spam&quot; number
+food = {&quot;ham&quot; : &quot;yes&quot;, &quot;egg&quot; : &quot;yes&quot;, &quot;spam&quot; : &quot;no&quot; }
+food
+#&gt; {&#39;egg&#39;: &#39;yes&#39;, &#39;ham&#39;: &#39;yes&#39;, &#39;spam&#39;: &#39;no&#39;}</pre>
+
+<pre class = 'prettyprint lang-python'>food[&quot;spam&quot;] # Use key to access/modify value
+#&gt; &#39;no&#39;
+food[&quot;spam&quot;] = &quot;yes&quot;
+food
+#&gt; {&#39;egg&#39;: &#39;yes&#39;, &#39;ham&#39;: &#39;yes&#39;, &#39;spam&#39;: &#39;yes&#39;}</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with dictionaries</h2></hgroup><article  id="working-with-dictionaries">
+
+<pre class = 'prettyprint lang-python'>alien_0 = {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5}
+alien_0
+#&gt; {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5}</pre>
+
+<pre class = 'prettyprint lang-python'>alien_0[&#39;x_position&#39;] = 0   # add a new key:value pair
+alien_0[&#39;y_position&#39;] = 25  # add a new key:value pair
+alien_0
+#&gt; {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5, &#39;x_position&#39;: 0, &#39;y_position&#39;: 25}</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with dictionaries</h2></hgroup><article  id="working-with-dictionaries-1">
+
+<pre class = 'prettyprint lang-python'># Lets put this all together. Here we are moving the alien a certain
+# amount on the x axis based on the  &#39;speed&#39; rating we have given it.
+alien_0 = {&#39;x_position&#39;: 0, &#39;y_position&#39;: 25, &#39;speed&#39;: &#39;medium&#39;}
+print(&quot;Original x-position: &quot; + str(alien_0[&#39;x_position&#39;]))
+#&gt; Original x-position: 0</pre>
+
+<pre class = 'prettyprint lang-python'># Move the alien based on its current speed.
+if alien_0[&#39;speed&#39;] == &#39;slow&#39;:
+    x_increment = 1
+elif alien_0[&#39;speed&#39;] == &#39;medium&#39;:
+    x_increment = 2
+else: # a very fast alien.
+    x_increment = 3
+# new position = old position + increment.
+alien_0[&#39;x_position&#39;] += x_increment
+print(&quot;New x-position: &quot; + str(alien_0[&#39;x_position&#39;]))
+#&gt; New x-position: 2</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with dictionaries</h2></hgroup><article  id="working-with-dictionaries-2">
+
+<ul>
+<li><code>key:value</code> pairs can be deleted in the same way we delete list entries.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>alien_0 = {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5}
+print(alien_0)
+#&gt; {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5}</pre>
+
+<pre class = 'prettyprint lang-python'>del alien_0[&#39;points&#39;]
+print(alien_0)
+#&gt; {&#39;color&#39;: &#39;green&#39;}</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with dictionaries</h2></hgroup><article  id="working-with-dictionaries-3">
+
+<ul>
+<li>We can loop over a dictionary using the <code>items()</code> method.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>user_0 = {
+&#39;login&#39;: &#39;fcampelo&#39;,
+&#39;first&#39;: &#39;felipe&#39;,
+&#39;last&#39;: &#39;campelo&#39;
+}
+# notice that we can have multiple iterating variables, 
+# and that dictionaries are *unordered*
+for key, value in user_0.items(): 
+    print(&quot;\nKey: &quot; + key + &quot;\tValue: &quot; + value)
+#&gt; 
+#&gt; Key: login   Value: fcampelo
+#&gt; 
+#&gt; Key: last    Value: campelo
+#&gt; 
+#&gt; Key: first   Value: felipe</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with dictionaries</h2></hgroup><article  id="working-with-dictionaries-4">
+
+<ul>
+<li>Sometimes we will only need to loop through keys and not values (or vice versa)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>user_0 = {&#39;login&#39;: &#39;fcampelo&#39;, &#39;first&#39;: &#39;felipe&#39;, &#39;last&#39;: &#39;campelo&#39;}
+for key in user_0.keys():
+    print(key.title())
+#&gt; Login
+#&gt; Last
+#&gt; First</pre>
+
+<pre class = 'prettyprint lang-python'>for value in user_0.values():
+    print(value.upper())
+#&gt; FCAMPELO
+#&gt; CAMPELO
+#&gt; FELIPE</pre>
+
+</article></slide><slide class=""><hgroup><h2>Working with dictionaries</h2></hgroup><article  id="working-with-dictionaries-5">
+
+<ul>
+<li>You can update dictionaries using the <code>.update()</code> method:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>w = {&quot;house&quot;:&quot;Haus&quot;,&quot;cat&quot;:&quot;Katze&quot;,&quot;red&quot;:&quot;rot&quot;}
+w1 = {&quot;red&quot;:&quot;rouge&quot;,&quot;blau&quot;:&quot;bleu&quot;}
+w.update(w1)
+print(w)
+#&gt; {&#39;house&#39;: &#39;Haus&#39;, &#39;blau&#39;: &#39;bleu&#39;, &#39;red&#39;: &#39;rouge&#39;, &#39;cat&#39;: &#39;Katze&#39;}</pre>
+
+</article></slide><slide class=""><hgroup><h2>Lists of dictionaries</h2></hgroup><article  id="lists-of-dictionaries">
+
+<pre class = 'prettyprint lang-python'>alien_0 = {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5}
+alien_1 = {&#39;color&#39;: &#39;yellow&#39;, &#39;points&#39;: 10}
+alien_2 = {&#39;color&#39;: &#39;red&#39;, &#39;points&#39;: 15}
+aliens = [alien_0, alien_1, alien_2]
+
+for alien in aliens:
+    print(alien)
+#&gt; {&#39;color&#39;: &#39;green&#39;, &#39;points&#39;: 5}
+#&gt; {&#39;color&#39;: &#39;yellow&#39;, &#39;points&#39;: 10}
+#&gt; {&#39;color&#39;: &#39;red&#39;, &#39;points&#39;: 15}</pre>
+
+</article></slide><slide class=""><hgroup><h2>Nested dictionaries</h2></hgroup><article  id="nested-dictionaries">
+
+<pre class = 'prettyprint lang-python'>users = {
+    &#39;aeinstein&#39;: {&#39;first&#39;: &#39;albert&#39;,&#39;last&#39;: &#39;einstein&#39;,&#39;location&#39;: &#39;princeton&#39;},
+    &#39;mcurie&#39;: {&#39;first&#39;: &#39;marie&#39;,&#39;last&#39;: &#39;curie&#39;,&#39;location&#39;: &#39;paris&#39;,}}
+
+for username, user_info in users.items():
+    print(&quot;\nUsername: &quot; + username)
+    full_name = user_info[&#39;first&#39;] + &quot; &quot; + user_info[&#39;last&#39;]
+    location = user_info[&#39;location&#39;]
+    print(&quot;\tFull name: &quot; + full_name.title() + &quot;\tLocation: &quot; + location.title())
+#&gt; 
+#&gt; Username: aeinstein
+#&gt;  Full name: Albert Einstein  Location: Princeton
+#&gt; 
+#&gt; Username: mcurie
+#&gt;  Full name: Marie Curie  Location: Paris</pre>
+
+</article></slide><slide class=""><hgroup><h2>Summary</h2></hgroup><article  id="summary">
+
+<ul>
+<li>Lists and dictionaries are two very useful and very flexible data types provided by Python.</li>
+<li>You can nest these structures - lists of lists, lists of dictionaries, dictionaries of dictionaries, etc.</li>
+<li>Lists are ordered objects and can be accessed by index, while dictionaries are unordered <code>key:value</code> pairs that are accessed using the keys.</li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

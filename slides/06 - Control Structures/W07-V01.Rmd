@@ -1,0 +1,237 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Control Structures in Python
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = TRUE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+## Overview
+- `if`-`else` blocks
+- `for` and `while` blocks
+  <br><br>
+- Acknowledgments
+  - Some of the examples in this unit are taken from: [Python Crash Course - A Hands-on, Project-based, introduction to programming](https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036)
+  - This unit was created with the immense help of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  
+## Control structures
+- As we discussed in an earlier video, control structures play an importat role not only in data science but in any other coding-related activity.
+- Python has the same general control structures that we saw in R, the most importat being
+  - `if-else`, for conditional execution
+  - `for` and `while` for iterative execution
+  
+## `if`-`else` blocks
+- The general structure of an `if` statement in Python is:
+
+```{python,eval=FALSE}
+if (condition):
+    <code to run if condition is True>
+    <code to run if condition is True>
+    <code to run if condition is True>
+
+<code here runs regardless of the if condition>
+```
+- Possibly the most important difference from R is semantic: instead of enclosing the block in curly braces, Python uses indentation to define the scope of `if` blocks.
+- The `if(condition)` line must always end with `:` (except for comments, of course)
+
+## `if`-`else` blocks
+- Two other components of `if` statements exist: `else` and `elif` (a conditional `else`):
+
+```{python,eval=FALSE}
+if (condition1):
+    <code to run if condition1 is True>
+elif (condition2):
+    <code to run if condition1 is False and condition2 is True>
+else:
+  <code to run if both condition1 and condition2 are False>
+  
+<code here runs regardless of conditions 1 and 2>
+```
+- Like in R, `if-else` blocks can be nested
+  - just increase the indentation of the nested blocks.
+
+## `if`-`else` blocks
+- Let's look at a toy problem. Imagine that you want to check the age of a person to see if they are eligible to see a football match based on age.
+- Assume the following information:
+  - Children of ages 6 or younger cannot enter the stadium.
+  - Children between the ages of 6 and 12 (inclusive) can only enter the child-friendly areas.
+  - Teenagers older than 12 and younger than 16 can enter the stadium accompanied by an adult.
+  - People who are 17 or older can enter the stadium freely.
+
+## `if`-`else` blocks
+```{python}
+age = 15    # just as an example
+
+if (age >= 17):      # People 17 or older
+    print("You can enter the stadium freely.")
+elif (age >= 13):    # People between 13 and younger than 17
+    print("You can enter the stadium with an adult.")
+elif (age >= 7):     # People between 7 and 12
+    print("You can only enter the child-friendly areas of the stadium.")
+else: 
+    print("You cannot enter the stadium.")
+    
+```
+
+## Nesting `if`-`else` blocks
+
+```{python}
+age = 18    # just as an example
+if (age <= 12):
+    print("You cannot purchase a ticket.")
+else:
+    if (age <= 20 or age >= 60):
+        print("Ticket price is £12.")
+    else:
+        print("Ticket price is £20.")
+    print("We hope you enjoy the match") # this prints for anyone over 13
+    
+```
+
+## `for` loops
+- `for` loops iterate over a finite, predefined sequence of values.
+- The general structure of a `for` statement in Python is:
+```{python,eval=FALSE}
+for <iterator> in <sequence>:
+    <code to run>
+    <code to run>
+    <code to run>
+
+<code here is outside the for loop>
+```
+- Just like the `if` blocks, notice the use of indentation to define the block scope, as well as the use of `:` to mark the end of the sequence statement.
+
+## `for` loops
+```{python}
+# One at a time, assign each value of the sequence to i and,
+for i in [432, 342, 928, 920]:
+    # multiply i by 10 and store the product in a new variable, x
+    x = i * 10
+    # print the value of x
+    print(x)
+    
+```
+
+## `for` loops can have an `else` too!
+- An interesting aspect of `for` loops in Python is that it also features an `else` clause, which can be pretty useful if you know how to use.
+- Essentially, the `else` clause of `for` loops executes _only_ when the full `for` loop finished normally, i.e., did not encounter a `break` statement.
+  - (yes, Python also has the same `break` statement as R, which can be used to prematurely exit an iterative loop.)
+  
+## `for` loops can have an `else` too!
+- A quick example (taken from [here](http://book.pythontips.com/en/latest/for_-_else.html)):
+```{python}
+for n in range(2, 7): # range(a,b) goes from (a) until (b-1)
+    for x in range(2, n):
+        if n % x == 0:     # if 'n' is a multiple of 'x'
+            str(n) + ' = ' + str(x) + ' x ' + str(n/x)
+            break
+            
+```
+
+## `for` loops can have an `else` too!
+- A quick example (taken from [here](http://book.pythontips.com/en/latest/for_-_else.html)):
+```{python}
+for n in range(2, 7): # range(a,b) goes from (a) until (b-1)
+    for x in range(2, n):
+        if n % x == 0:     # if 'n' is a multiple of 'x'
+            str(n) + ' = ' + str(x) + ' x ' + str(n/x)
+            break
+    else: 
+        # loop fell through without finding a factor
+        str(n) + ' is a prime number'
+            
+```
+
+## `while` loops
+- `while` loops iterate a until a certain condition becomes `True`
+- The general structure of a `while` statement in Python is:
+```{python,eval=FALSE}
+while <condition>:
+    <code to run>
+    <code to run>
+    <code to run>
+
+<code here is outside the while loop>
+```
+
+## `while` loops
+```{python}
+current_number = 1
+while current_number <= 5:
+    print(current_number)
+    current_number += 1
+```
+
+## `while` loops
+- Some more examples:
+```{python}
+current_number = 0
+while current_number < 10:
+    current_number += 1     # "a += b" is a shortcut for "a = a + b"
+    if current_number % 2 == 0:
+        continue            # continue 'breaks' the current iteration
+    print(current_number)
+
+```
+
+## `while` loops
+- Some more examples:
+```{python}
+# Start with roles that need to be verified
+unconfirmed_roles = ["Il buono", "il brutto", "il cattivo"]
+confirmed_roles = []
+
+# Verify each role until there are no more unconfirmed ones.
+while unconfirmed_roles: # a non-empty list is a 'True'
+    current_role = unconfirmed_roles.pop() # extracts the last item
+    print("Verifying role: " + current_role.title())
+    confirmed_roles.append(current_role)
+
+
+```
+
+## `while` loops
+- Some more examples:
+```{python}
+pets = ['dog', 'none', 'dog', 'goldfish', 'none', 'none', 'cat']
+print(pets)
+
+while ('none' in pets): # 'a' in 'b' => 'b' contains an 'a'
+    pets.remove('none') # removes the first occurrence of "none" from "pets"
+    print(pets)
+
+```
+
+## `while` loops
+- Make your computer behave like an 8 year old kid (try at home):
+```{python, eval = FALSE}
+prompt = "\nTell me something:"
+message = ""
+# Answer 'I quit!' to end the program.
+while message != 'I quit!':
+    message = input(prompt) # Ask the user for input with message "prompt"
+    print(message)
+```
+
+## Summary
+- Control structures in Python use indentation instead of curly braces to define scope
+- Early stop structures (`break`, `continue`) can be used to prematurely end a loop or an iteration.
