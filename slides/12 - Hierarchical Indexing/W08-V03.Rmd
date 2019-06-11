@@ -1,0 +1,274 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Hierarchical Indexing
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = FALSE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+reticulate::use_python("/anaconda3/bin/python3", required = FALSE)
+```
+
+## Overview
+- The `MultiIndex` type
+- Multi dimensional indexin in `Series` and `DataFrame`
+- Indexing and Slicing
+  <br><br>
+- Acknowledgments
+  - This slide deck is heavily inspired on Jake VanderPlas' _Python Data Science Handbook_,  [Chapter 3](https://jakevdp.github.io/PythonDataScienceHandbook/03.00-introduction-to-pandas.html)
+  
+## Advanced indexing in Pandas Objects
+- So far we've seen one-dimensional and two-dimensional data, in the form of Pandas `Series` and `DataFrame` objects, but often it is useful to store higher-dimensional data, i.e., data that is indexed by more than two keys. 
+- A common way of achieving this in Pandas is _hierarchical indexing_, sometimes also called _multi-indexing_. This allows us to incorporate multiple index levels within a single index and, consequently, compactly represent higher-dimensional data within the familiar `Series` and `DataFrame` objects.
+
+## Multiply Indexed `Series`
+- Suppose that we want to work with some US State population data, incorporating the year in which the census was taken as part of our analysis:
+```{python}
+index = [('California', 2000), ('California', 2010),
+         ('New York', 2000), ('New York', 2010),
+         ('Texas', 2000), ('Texas', 2010)]
+populations = [33871648, 37253956,
+               18976457, 19378102,
+               20851820, 25145561]
+```
+
+## Multiply Indexed `Series`
+- One (naïve) way of doing it would be to simply use the \<state, year\> tuples as keys in a `Series` object, e.g.,
+```{python}
+import pandas as pd
+mydata = pd.Series(populations, index=index)
+mydata
+```
+
+## Multiply Indexed `Series`
+- This, however, could be very unwieldy: for instance, to extract all values from `2000`, we would need a `for` loop (which makes the code look messier than it needs, and also is potentially slow):
+```{python}
+mydata.index
+```
+```{python}
+# Each index element is a (state, year) tuple. We want to use the second 
+# element of these tuples for the indexing. Then, with some Python magic:
+mydata[[i for i in mydata.index if i[1] == 2010]]
+```
+
+## Pandas' `MultiIndex`
+- Pandas provides a data type `MultiIndex`, which allows easier multi-dimensional data indexing.
+- A `MultiIndex` is created from the tuples using:
+```{python}
+index = pd.MultiIndex.from_tuples(index)
+index
+```
+- `MultiIndex` objects contain multiple levels of indexing, as well as multiple labels for each data point which encode these levels.
+
+
+## Pandas' `MultiIndex`
+- Instead of re-creating our data object we can just _reindex_ it using our new `MultiIndex` object:
+```{python}
+mydata = mydata.reindex(index)
+mydata
+```
+- Notice that we can already see a _hierarchical_ representation of our data.
+
+## Pandas' `MultiIndex`
+- Now that our series is multi-indexed, we can extract the data based on any index using a simple slicing notation:
+```{python}
+mydata[:, 2000]
+```
+- This not only looks cleaner, but is also much more computationally efficient (since the operation is pushed into the underlying compiled code layer of Pandas) - it may not make much of a difference for this small example, but can be hugely advantageous if you're working with really big data.
+
+## Pandas' `MultiIndex`
+- Notice that we could alternatively have stored the same data using a simple `DataFrame` with index and column labels. This equivalence is not accidental, but rather a design choice of Pandas.
+- The `.unstack()` method can be used to convert a multiply indexed `Series` into a conventionally indexed `DataFrame`:
+```{python}
+mydata.unstack()
+```
+- You can also do the reverse operation using `.stack()`
+
+## Pandas' `MultiIndex`
+- Just as we were able to use a `MultiIndex` to represent 2D data as a 1D `Series`, we can also use it to represent 3D (or higher dimensional) data in a `Series` or `DataFrame`.
+- Each extra level in a multi-index represents an extra dimension of data, which provides more flexibility in the types of data we can represent.
+
+## Creating `MultiIndex` objects
+- The most straightforward way to construct a multiply indexed `Series` or `DataFrame` is to simply pass a list of two or more index arrays to the constructor, in which case the `MultiIndex` is constructed behind the scenes:
+```{python}
+import numpy as np
+df = pd.DataFrame(np.random.rand(4, 2), # 4x2 array of random values
+                  index   = [['a', 'a', 'b', 'b'], [1, 2, 1, 2]], # Indices
+                  columns = ['data1', 'data2']) # Column names
+df
+```
+
+## Creating `MultiIndex` objects
+- For more flexibility in how the index is constructed, it is possibly to use theconstructors available for `pd.MultiIndex`:
+  - `pd.MultiIndex.from_arrays()`
+  - `pd.MultiIndex.from_tuples()`
+  - `pd.MultiIndex.from_product()`
+
+## `MultiIndex` level names
+- Sometimes it is convenient to (re-) name the levels of the MultiIndex. This is done by passing the `names` argument to the constructor method, or by setting the names attribute of an existing index:
+```{python}
+mydata.index.names
+mydata.index.names = ['state', 'year']
+mydata
+```
+
+## `MultiIndex` for columns
+- In a `DataFrame` object rows and columns are completely symmetric, which means that we can also multiply-index the columns.
+- First, let's create row and column (hierarchical) indices
+```{python}
+# the .from_product() constructor generates levels for all combinations
+# of its arguments
+index = pd.MultiIndex.from_product([[2013, 2014], [1, 2]],
+                                   names = ['year', 'visit'])
+columns = pd.MultiIndex.from_product([['Bob', 'Guido', 'Sue'], ['HR', 'Temp']],
+                                     names = ['subject', 'type'])
+index
+````
+
+## `MultiIndex` for columns
+- Let's now create the `DataFrame` using some (hypothetical) data:
+```{python}
+data = np.round(np.random.randn(4, 6), 1)
+data[:, ::2] *= 10
+data += 37
+
+# create the DataFrame
+health_data = pd.DataFrame(data, index = index, columns = columns)
+health_data
+```
+
+## Indexing and slicing 
+- Indexing and slicing are relatively straightforward if you think of indices as added dimensions. 
+- Consider first the population data we generated earlier:
+```{python}
+mydata
+```
+
+## Indexing and slicing 
+- We can easily index with multiple terms:
+```{python}
+mydata['Texas', 2010]
+```
+```{python}
+# or do partial indexing
+mydata['Texas']
+```
+```{python}
+# partial slicing is available if the index is sorted (more later)
+mydata.loc['New York':'Texas']
+```
+
+## Indexing and slicing 
+- With (sorted) indices, partial indexing can be performed on lower levels by passing an empty slice in the first index:
+```{python}
+mydata[:, 2000]
+```
+- We can also do boolean masking (e.g., `mydata[population > 19000000]`) and fancy indexing (e.g., `mydata[['California', 'Texas']]`)
+
+## Indexing and slicing 
+- For `DataFrames` the same general idea applies. For the health data object, we can select based on different hierarchical levels of columns:
+```{python}
+health_data['Guido', 'HR']
+```
+
+## Indexing and slicing 
+- We can use the same indexers as in `Series`:
+```{python}
+health_data.iloc[:2, :3]
+```
+```{python}
+health_data.loc[:, 'Bob']
+```
+
+## Indexing and slicing 
+- Each individual index in `loc` or `iloc` can also be passed a tuple of multiple indices:
+```{python}
+health_data.loc[:, ('Bob', 'HR')]
+health_data.loc[(2013, 1), ('Bob', 'HR')]
+```
+
+
+## Rearranging multi-indices
+- There are a number of operations that will preserve all the information in the dataset, but rearrange it for the purposes of various computations. 
+- An early example was the use of `unstack()` to ocnvert a multi-indexed `Series` to a 2D dataframe, but there are many more ways to finely control the rearrangement of data between hierarchical indices and columns.
+
+## Sorted and unsorted indices
+- Many of the `MultiIndex` slicing operations will fail if the index is not _sorted_. 
+- Let's create some simple multiply indexed data where the indices are not lexographically sorted:
+```{python}
+index = pd.MultiIndex.from_product([['a', 'c', 'b'], [1, 2]])
+data_unsrtd = pd.Series(np.random.rand(6), index = index)
+data_unsrtd.index.names = ['char', 'int']
+data_unsrtd
+```
+
+## Sorted and unsorted indices
+- For various reasons, partial slices and other similar operations require the levels in the `MultiIndex` to be in sorted (i.e., lexographical) order.
+- Pandas provides a number of convenience routines to perform this sorting, e.g. `.sort_index()` and `sortlevel()` methods of the `DataFrame`.
+```{python}
+data_srtd = data_unsrtd.sort_index()
+data_srtd
+```
+
+## Sorted and unsorted indices
+```{python}
+data_srtd['a':'b']
+```
+```{python,error=TRUE}
+data_unsrtd['a':'b']
+```
+
+## Unstacking indices
+- As we saw earlier, it is possible to convert a dataset from a stacked multi-index to a simple two-dimensional representation (optionally specifying the level to use), e.g.:
+```{python}
+mydata
+mydata.unstack(level = 0)
+```
+
+## Index setting and resetting
+- Another way to rearrange hierarchical data is to turn index labels into columns, which can be done using the `.reset_index()` method. 
+```{python}
+pop_flat = mydata.reset_index(name = 'population')
+pop_flat
+```
+- Notice that this can be used to make the data structure _tidy data_-compliant, which is very useful if you're combining Python and R's _tidyverse_ for data analysis.
+
+## Index setting and resetting
+- On the opposite direction, a _tidy_ dataframe (possibly being imported into Python after preprocessing done using R) can be used to build a `MultiIndex`'ed Pandas object. 
+- This can be done using `.set_index()`, which returns a multiply indexed `DataFrame`:
+```{python}
+pop_flat.set_index(['state', 'year'])
+```
+
+## Data Aggregations on Multi-Indices
+- For hierarchically indexed data, Pandas' built-in data aggregation methods (e.g., `.mean()`) can be passed a level parameter that controls which subset of the data the aggregate is computed on, which makes calculating group summaries quite convenient!
+```{python}
+health_data.mean(level = 'year')
+```
+
+## Data Aggregations on Multi-Indices
+- Group summaries can also be calculated for levels on the columns as well, e.g.:
+```{python}
+# Calculate the standard deviation of each measurement at each visit
+health_data.std(axis = 1, level = 'type')
+```
+
+## Summary
+- Multiple indexing is a powerful feature of Pandas objects that allow a multidimensional representation of data using the familiar `Series` and `DataFrame` objects
+- It can be used to easily access, modify and summarise data at different levels, using efficient compiled code implementations
+- Data aggregations can be very simple, as is the conversion to/from tidy data formats, which facilitates integration between R and Pandas for data analysis.

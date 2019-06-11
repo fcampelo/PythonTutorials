@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introduction to Pandas</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Introduction to Pandas',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W08-V01_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W08-V01_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W08-V01_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W08-V01_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W08-V01_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W08-V01_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W08-V01_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W08-V01_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W08-V01_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W08-V01_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W08-V01_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W08-V01_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W08-V01_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li>Introduction to Pandas</li>
+<li><code>Series</code> objects</li>
+<li><code>DataFrame</code> objects</li>
+<li><code>Index</code> objects</li>
+<li>Selection and Indexing <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This slide deck is heavily inspired on Jake VanderPlas’ <em>Python Data Science Handbook</em>, <a href='https://jakevdp.github.io/PythonDataScienceHandbook/03.00-introduction-to-pandas.html' title=''>Chapter 3</a></li>
+<li>This unit was created with the immense help of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>What is Pandas</h2></hgroup><article  id="what-is-pandas">
+
+<ul>
+<li>Pandas is a package built on top of NumPy, which provides an efficient implementation of a data frame (or, as it is called in Pandas, a <code>DataFrame</code>).</li>
+<li>Similarly to R’s data frames / tibbles, Pandas’ DataFrames are multidimensional arrays with attached row and column labels, can contain heterogeneous data types and missing data.</li>
+<li>Pandas also implements a number of powerful data operations which will feel very familiar to our <code>dplyr</code>-trained eyes.</li>
+<li>Besides <code>DataFrame</code>, Pandas also provides other powerful data objects: <code>Series</code> and <code>Index</code>.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>Series</code> objects</h2></hgroup><article  id="series-objects">
+
+<ul>
+<li>A Pandas <code>Series</code> is a one-dimensional array of indexed data. It can be easily created from a list or array.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>import numpy as np  # using aliases for code brevity
+import pandas as pd
+mydata = pd.Series([.0, .5, 1.])
+print(mydata)
+#&gt; 0    0.0
+#&gt; 1    0.5
+#&gt; 2    1.0
+#&gt; dtype: float64</pre>
+
+<ul>
+<li>Notice that the <code>Series</code> explicitly includes stores data as <code>&lt;index-value&gt;</code> pairs. Indices can be used to access the values.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>Series</code> objects</h2></hgroup><article  id="series-objects-1">
+
+<pre class = 'prettyprint lang-python'>mydata.values
+#&gt; array([0. , 0.5, 1. ])</pre>
+
+<pre class = 'prettyprint lang-python'>mydata.index
+#&gt; RangeIndex(start=0, stop=3, step=1)</pre>
+
+<ul>
+<li>The index is an array-like object of type <code>pd.Index</code>. Values in a Series object (which, it should be clear by now, generalises the basic 1D NumPy array) can be accessed the intuitive way:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata[0]
+#&gt; 0.0</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>Series</code> objects</h2></hgroup><article  id="series-objects-2">
+
+<ul>
+<li>The essential difference between a <code>Series</code> and a NumPy 1D array is the index:
+
+<ul>
+<li>The NumPy Array has an (implicitly defined) integer index used to access the values</li>
+<li>The Pandas Series has an (explicitly defined) index associated with the values.</li>
+</ul></li>
+<li>This gives <code>Series</code> objects additional capabilities, e.g., generalising the index to any type:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>import pandas as pd
+mydata = pd.Series(data = [0.25, 0.5, 0.75], index=[&#39;1Q&#39;, &#39;2Q&#39;, &#39;3Q&#39;])
+mydata[&#39;2Q&#39;]
+#&gt; 0.5</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>Series</code> objects</h2></hgroup><article  id="series-objects-3">
+
+<ul>
+<li>It is also possible to see <code>Series</code> as a specialised Python dictionary: a dictionary maps arbitrary keys to a set of arbitrary values, and a <code>Series</code> maps typed keys to a set of typed values.</li>
+<li>The <em>typing</em> of the keys and values is important: the type information of <code>Series</code> makes it much more efficient than Python dictionaries for certain operations.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>user_dict = {&#39;login&#39;: &#39;fcampelo&#39;, &#39;first&#39;: &#39;felipe&#39;, &#39;last&#39;: &#39;campelo&#39;}
+user_series = pd.Series(user_dict)
+user_series
+#&gt; login    fcampelo
+#&gt; first      felipe
+#&gt; last      campelo
+#&gt; dtype: object</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>Series</code> objects</h2></hgroup><article  id="series-objects-4">
+
+<ul>
+<li>Unlike a dictionary, you can do slicing on <code>Series</code>:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>user_series[&#39;first&#39;:]
+#&gt; first     felipe
+#&gt; last     campelo
+#&gt; dtype: object</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>DataFrame</code> objects</h2></hgroup><article  id="dataframe-objects">
+
+<ul>
+<li>Another fundamental structure in Pandas is the <code>DataFrame</code>, which is possibly one of the most usefult for data science. In a sense it is similar to R’s <code>data.frame</code> or <code>tibble</code> objects, but with some important differences.</li>
+<li>Like the <code>Series</code> objects, the <code>DataFrame</code> can also be seen as generalised 2D NumPy array or, alternatively, as a specialised Python dictionary.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>DataFrame</code> objects</h2></hgroup><article  id="dataframe-objects-1">
+
+<ul>
+<li>A <code>DataFrame</code> can be seen as an analog of a 2D NumPy array, with flexible row indices and column names.</li>
+<li>It may be useful to think of a DataFrame as a sequence of Series objects that share the same index - i.e., that are, in a sense, aligned.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>area = pd.Series({&#39;CA&#39;: 423967, &#39;TX&#39;: 695662, &#39;NY&#39;: 141297})
+population = pd.Series({&#39;CA&#39;: 38332521, &#39;TX&#39;: 26448193, &#39;NY&#39;: 19651127})
+mydata = pd.DataFrame({&#39;population&#39;: population, &#39;area&#39;: area})
+
+# This will look familiar :)
+mydata
+#&gt;     population    area
+#&gt; CA    38332521  423967
+#&gt; TX    26448193  695662
+#&gt; NY    19651127  141297</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>DataFrame</code> objects</h2></hgroup><article  id="dataframe-objects-2">
+
+<ul>
+<li>Like <code>Series</code>, the <code>DataFrame</code> has an <code>index</code> attribute that gives access to the row (observation) labels. Additionally, it also has a <code>columns</code> attribute, which holds the column (variable) labels.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>print(mydata.index)
+#&gt; Index([&#39;CA&#39;, &#39;TX&#39;, &#39;NY&#39;], dtype=&#39;object&#39;)
+print(mydata.columns)
+#&gt; Index([&#39;population&#39;, &#39;area&#39;], dtype=&#39;object&#39;)</pre>
+
+<ul>
+<li>In this way it can be seen as a generalised 2D NumPy array, where both rows and columns have a (generalised) index for accessing the data.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>DataFrame</code> objects</h2></hgroup><article  id="dataframe-objects-3">
+
+<ul>
+<li>We can also build a <code>DataFrame</code> from a dictionary (or a list of dictionaries, a dictionary of <code>Series</code>, a 2D NumPy array, etc.)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>data = {&#39;name&#39;: [&#39;Jason&#39;, &#39;Molly&#39;, &#39;Tina&#39;, &#39;Jake&#39;, &#39;Amy&#39;], 
+        &#39;age&#39;: [42, 52, 36, 24, 73], 
+        &#39;preTestScore&#39;: [4, 24, 31, 2, 3],
+        &#39;postTestScore&#39;: [25, 94, 57, 62, 70]}
+df = pd.DataFrame(data)
+df
+#&gt;     name  age  preTestScore  postTestScore
+#&gt; 0  Jason   42             4             25
+#&gt; 1  Molly   52            24             94
+#&gt; 2   Tina   36            31             57
+#&gt; 3   Jake   24             2             62
+#&gt; 4    Amy   73             3             70</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>Index</code> objects</h2></hgroup><article  id="index-objects">
+
+<ul>
+<li>The third type of Pandas object is the <code>Index</code>. Both <code>Series</code> and <code>DataFrame</code> objects contain an explicit index that lets you reference and modify data.</li>
+<li>This <code>Index</code> object can be thought of either as an immutable array or as an ordered (multi-)set, which results in some interesting operations that can be performed on these objects.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>Index</code> objects</h2></hgroup><article  id="index-objects-1">
+
+<ul>
+<li>Building an <code>Index</code> object is easy:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>ind = pd.Index([1, 1, 2, 3, 5, 8, 13])
+ind
+#&gt; Int64Index([1, 1, 2, 3, 5, 8, 13], dtype=&#39;int64&#39;)</pre>
+
+<ul>
+<li>We can use standard Python indexing notation to retrieve values or slices:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>ind[3]
+#&gt; 3
+ind[1::2]
+#&gt; Int64Index([1, 3, 8], dtype=&#39;int64&#39;)</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>Index</code> objects</h2></hgroup><article  id="index-objects-2">
+
+<ul>
+<li>Index objects also have many of the attributes familiar from NumPy arrays</li>
+<li>One important difference between Index objects and NumPy arrays is that indices are <strong>immutable</strong>, which means that they cannot be modified as an array would:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>print(ind.size, ind.shape, ind.ndim, ind.dtype)
+#&gt; 7 (7,) 1 int64
+ind[0] = 0
+#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): TypeError: Index does not support mutable operations
+#&gt; 
+#&gt; Detailed traceback: 
+#&gt;   File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;
+#&gt;   File &quot;/anaconda3/lib/python3.7/site-packages/pandas/core/indexes/base.py&quot;, line 2065, in __setitem__
+#&gt;     raise TypeError(&quot;Index does not support mutable operations&quot;)</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>Index</code> objects</h2></hgroup><article  id="index-objects-3">
+
+<ul>
+<li>As we’re going to see in future slides, Pandas is in many ways similar to R’s dplyr package. Its objects are designed to facilitate operations such as joins across datasets, and as such unions, intersections, differences, and other combinations of datasets can be computed relatively easily. For instance:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>ind2 = pd.Index(np.arange(0,7))
+ind &amp; ind2 # intersection
+#&gt; Int64Index([1, 1, 2, 3, 5], dtype=&#39;int64&#39;)</pre>
+
+<pre class = 'prettyprint lang-python'>ind | ind2 # union
+#&gt; Int64Index([0, 1, 1, 2, 3, 4, 5, 6, 8, 13], dtype=&#39;int64&#39;)</pre>
+
+<ul>
+<li>These operations may also be accessed via object methods, for example <code>ind.intersection(ind2)</code></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>Series</code></h2></hgroup><article  id="indexing-in-series">
+
+<ul>
+<li>The slicing and indexing conventions in <code>Series</code> can be a source of confusion. For example, if the <code>Series</code> has an explicit integer index, an indexing operation such as <code>data[1]</code> will use the explicit indices, while a slicing operation like <code>data[1:3]</code> will use the implicit, Python-style index:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata = pd.Series(data = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], index=[3, 2, 1, 0])
+mydata[0]   # explicit index when indexing
+#&gt; &#39;d&#39;
+mydata[0:2] # implicit index when slicing
+#&gt; 3    a
+#&gt; 2    b
+#&gt; dtype: object</pre>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>Series</code></h2></hgroup><article  id="indexing-in-series-1">
+
+<ul>
+<li>Because of this potential confusion, Pandas provides some special indexer attributes that explicitly expose certain indexing schemes. These are not functional methods, but attributes that expose a particular slicing interface to the data in the Series.</li>
+<li>The <code>loc</code> attribute allows indexing and slicing that <strong>always</strong> reference the explicit index:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.loc[0]
+#&gt; &#39;d&#39;
+mydata.loc[0:2]
+#&gt; Series([], dtype: object)
+mydata.loc[0:2:-1]
+#&gt; 0    d
+#&gt; 1    c
+#&gt; 2    b
+#&gt; dtype: object</pre>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>Series</code></h2></hgroup><article  id="indexing-in-series-2">
+
+<ul>
+<li>The <code>iloc</code> attribute allows indexing and slicing that <strong>always</strong> reference the implicit, Python-style index:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.iloc[0]
+#&gt; &#39;a&#39;
+mydata.iloc[0:2]
+#&gt; 3    a
+#&gt; 2    b
+#&gt; dtype: object</pre>
+
+</article></slide><slide class=""><hgroup><h2>Data Selection in <code>DataFrames</code></h2></hgroup><article  id="data-selection-in-dataframes">
+
+<ul>
+<li>Recall that a <code>DataFrame</code> acts in many ways like a 2D array, and in other ways like a dictionary of <code>Series</code> structures sharing a common index. First, let’s rebuild the US States population data frame:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>area = pd.Series({&#39;CA&#39;: 423967, &#39;TX&#39;: 695662, &#39;NY&#39;: 141297})
+population = pd.Series({&#39;CA&#39;: 38332521, &#39;TX&#39;: 26448193, &#39;NY&#39;: 19651127})
+mydata = pd.DataFrame({&#39;population&#39;: population, &#39;area&#39;: area})</pre>
+
+</article></slide><slide class=""><hgroup><h2>Data Selection in <code>DataFrames</code></h2></hgroup><article  id="data-selection-in-dataframes-1">
+
+<ul>
+<li>The individual <code>Series</code> that make up the columns of the <code>DataFrame</code> can be accessed via:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata[&#39;population&#39;]
+#&gt; CA    38332521
+#&gt; TX    26448193
+#&gt; NY    19651127
+#&gt; Name: population, dtype: int64
+mydata.population
+#&gt; CA    38332521
+#&gt; TX    26448193
+#&gt; NY    19651127
+#&gt; Name: population, dtype: int64</pre>
+
+<ul>
+<li>Though the &ldquo;.column&rdquo; notation is useful, it does not always work! If the column names are not strings, or if they conflict with methods of the <code>DataFrame</code>, this attribute-style access is not possible.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Data Selection in <code>DataFrames</code></h2></hgroup><article  id="data-selection-in-dataframes-2">
+
+<ul>
+<li>We can create new variables easily using this notation</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata[&#39;density&#39;] = mydata[&#39;population&#39;] / mydata[&#39;area&#39;]
+mydata
+#&gt;     population    area     density
+#&gt; CA    38332521  423967   90.413926
+#&gt; TX    26448193  695662   38.018740
+#&gt; NY    19651127  141297  139.076746</pre>
+
+</article></slide><slide class=""><hgroup><h2>Data Selection in <code>DataFrames</code></h2></hgroup><article  id="data-selection-in-dataframes-3">
+
+<ul>
+<li>The raw underlying data array in a <code>DataFrame</code> can be examined using the <code>.values</code> attribute. This 2D array aspect of the <code>DataFrame</code> makes many familiar array-like operations possible on the <code>DataFrame</code> itself.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.values
+#&gt; array([[3.83325210e+07, 4.23967000e+05, 9.04139261e+01],
+#&gt;        [2.64481930e+07, 6.95662000e+05, 3.80187404e+01],
+#&gt;        [1.96511270e+07, 1.41297000e+05, 1.39076746e+02]])</pre>
+
+<pre class = 'prettyprint lang-python'>mydata.T # E.g. we can transpose the dataframe
+#&gt;                       CA            TX            NY
+#&gt; population  3.833252e+07  2.644819e+07  1.965113e+07
+#&gt; area        4.239670e+05  6.956620e+05  1.412970e+05
+#&gt; density     9.041393e+01  3.801874e+01  1.390767e+02</pre>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>DataFrames</code></h2></hgroup><article  id="indexing-in-dataframes">
+
+<ul>
+<li>When it comes to indexing of DataFrame objects, however, the dictionary-style indexing of columns precludes our ability to simply treat it as a NumPy array. In particular, passing a single index to an array accesses a row, but for a DataFrame we get a column instead.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.values[0]
+#&gt; array([3.83325210e+07, 4.23967000e+05, 9.04139261e+01])</pre>
+
+<pre class = 'prettyprint lang-python'>mydata[&#39;population&#39;]
+#&gt; CA    38332521
+#&gt; TX    26448193
+#&gt; NY    19651127
+#&gt; Name: population, dtype: int64</pre>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>DataFrames</code></h2></hgroup><article  id="indexing-in-dataframes-1">
+
+<ul>
+<li>For array-style indexing of <code>DataFrame</code>s we can use the <code>loc</code>, <code>iloc</code>, and <code>ix</code> indexers.</li>
+<li>Using <code>iloc</code> we index the underlying array as a simple NumPy array, but the DataFrame index and column labels are maintained:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.iloc[:2, 1]
+#&gt; CA    423967
+#&gt; TX    695662
+#&gt; Name: area, dtype: int64</pre>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>DataFrames</code></h2></hgroup><article  id="indexing-in-dataframes-2">
+
+<ul>
+<li>Similarly, using <code>loc</code> we index the underlying data in an array-like style, but using the explicit index and column names instead:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.loc[&#39;TX&#39;:&#39;NY&#39;, :&#39;population&#39;]
+#&gt;     population
+#&gt; TX    26448193
+#&gt; NY    19651127</pre>
+
+</article></slide><slide class=""><hgroup><h2>Indexing in <code>DataFrames</code></h2></hgroup><article  id="indexing-in-dataframes-3">
+
+<ul>
+<li>Any of the NumPy-style data access patterns can be used within these indexers.</li>
+<li>For example, in the <code>loc</code> indexer we can combine masking and fancy indexing:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>mydata.loc[mydata.density &gt; 100,      # Get places with density above 100
+           [&#39;population&#39;, &#39;density&#39;]] # Select only these two columns
+#&gt;     population     density
+#&gt; NY    19651127  139.076746</pre>
+
+</article></slide><slide class=""><hgroup><h2>Summary</h2></hgroup><article  id="summary">
+
+<ul>
+<li>Pandas implements objects that generalise Python / NumPy objects, which is useful for data analysis in a variety of ways</li>
+<li>Indexing and accessing data in these objects is quite flexible, and can be done using dictionary-like or array-like indexer attributes.</li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

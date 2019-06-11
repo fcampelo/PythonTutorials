@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Working with DataFrames</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Working with DataFrames',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'W08-V02_files/logo.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Dr. Felipe Campelo<br/>Aston University' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="W08-V02_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="W08-V02_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="W08-V02_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="W08-V02_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="W08-V02_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="W08-V02_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="W08-V02_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="W08-V02_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="W08-V02_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="W08-V02_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(W08-V02_files/logo.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="shiny-slides.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="W08-V02_files/logo.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview">
+
+<ul>
+<li>Methods for Pandas <code>DataFrame</code> objects</li>
+<li>Grouped summaries</li>
+<li>Missing data <br><br></li>
+<li>Acknowledgments
+
+<ul>
+<li>Some of the examples in this unit are taken from: <a href='https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036' title=''>Python Crash Course - A Hands-on, Project-based, introduction to programming</a></li>
+<li>This slide deck is heavily inspired on Jake VanderPlas’ <em>Python Data Science Handbook</em>, <a href='https://jakevdp.github.io/PythonDataScienceHandbook/03.00-introduction-to-pandas.html' title=''>Chapter 3</a></li>
+<li>This unit was created with the support of <a href='https://github.com/joealcantara/' title=''>Mr. Jomar Alcantara</a> from Aston University, UK.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Pandas’ <code>DataFrames</code></h2></hgroup><article  id="pandas-dataframes">
+
+<ul>
+<li>In the previous video we saw that Pandas’ <code>DataFrame</code> object generalises 2D NumPy arrays (and also Python dictionaries), allowing us to represent data tables in a conveniently indexed format.</li>
+<li><code>DataFrame</code> objects come equipped with a wealth of mathematican and statistical summary functions and methods, as well as other data manipulation tools that can make life easier for the data scientist. In this video we’ll explore some of these.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Starting simple</h2></hgroup><article  id="starting-simple">
+
+<ul>
+<li>Let’s start creating a simple dataset to explore some of these methods:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>import numpy as np
+import pandas as pd
+data = {&#39;name&#39;: [&#39;Jason&#39;, &#39;Molly&#39;, &#39;Tina&#39;, &#39;Jake&#39;, &#39;Amy&#39;], 
+        &#39;age&#39;: [42, 52, 36, 24, 73], 
+        &#39;preTestScore&#39;: [4, 24, 31, 2, 3],
+        &#39;postTestScore&#39;: [25, 94, 57, 62, 70]}
+        
+df = pd.DataFrame(data) # Convention - &quot;df&quot; stands for &quot;DataFrame&quot;
+print(df)
+#&gt;     name  age  preTestScore  postTestScore
+#&gt; 0  Jason   42             4             25
+#&gt; 1  Molly   52            24             94
+#&gt; 2   Tina   36            31             57
+#&gt; 3   Jake   24             2             62
+#&gt; 4    Amy   73             3             70</pre>
+
+</article></slide><slide class=""><hgroup><h2>Simple operations</h2></hgroup><article  id="simple-operations">
+
+<ul>
+<li>We can use the <code>DataFrame</code> methods to calculate simple summaries and operations on the data. For instance, the range of ages:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>[df[&#39;age&#39;].min(), df[&#39;age&#39;].max()]
+#&gt; [24, 73]</pre>
+
+<ul>
+<li>Note we are pointing to one column and then applying a function to that column. Other available methods include <code>.sum()</code>, <code>.cumsum()</code>, <code>.prod()</code>, etc.. (if it looks like NumPy, then congratulations - you’ve been paying attention!)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'># Average PreTest score
+df[&#39;preTestScore&#39;].mean()
+#&gt; 12.8</pre>
+
+</article></slide><slide class=""><hgroup><h2>Simple operations</h2></hgroup><article  id="simple-operations-1">
+
+<ul>
+<li>All summary statistics for a particular column:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>df[&#39;preTestScore&#39;].describe()
+#&gt; count     5.000000
+#&gt; mean     12.800000
+#&gt; std      13.663821
+#&gt; min       2.000000
+#&gt; 25%       3.000000
+#&gt; 50%       4.000000
+#&gt; 75%      24.000000
+#&gt; max      31.000000
+#&gt; Name: preTestScore, dtype: float64</pre>
+
+<ul>
+<li>These can also be obtained isolately with <code>.count()</code>, <code>.min()</code>, <code>.max()</code>, <code>.median()</code>, <code>.mean()</code>, <code>quantile()</code>, etc. Other summary statistics, such as <code>.skew()</code> and <code>.kurt()</code> are also available.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Simple operations</h2></hgroup><article  id="simple-operations-2">
+
+<ul>
+<li>For a purely numerical <code>DataFrame</code> we can treat it as a matrix and calculate, e.g., correlation and covariance matrices for the variables:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>df.corr()
+#&gt;                     age  preTestScore  postTestScore
+#&gt; age            1.000000     -0.105651       0.328852
+#&gt; preTestScore  -0.105651      1.000000       0.378039
+#&gt; postTestScore  0.328852      0.378039       1.000000</pre>
+
+<pre class = 'prettyprint lang-python'>df.cov()
+#&gt;                   age  preTestScore  postTestScore
+#&gt; age            340.80        -26.65         151.20
+#&gt; preTestScore   -26.65        186.70         128.65
+#&gt; postTestScore  151.20        128.65         620.30</pre>
+
+</article></slide><slide class=""><hgroup><h2>Exploring the Flights dataset</h2></hgroup><article  id="exploring-the-flights-dataset">
+
+<ul>
+<li>We can now start moving to a larger dataset, our old friend <code>flights</code> that we used to explore <code>dplyr</code> and <code>ggplot2</code> in our R slides. Since we do not have it conveniently included as part of one of our packages, we’ll have to read it from a .CSV:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights = pd.read_csv(&quot;./data/flights.csv&quot;)
+# Output the dimensions of this dataframe (rows and columns).
+flights.shape
+#&gt; (336776, 20)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Exploring the Flights dataset</h2></hgroup><article  id="exploring-the-flights-dataset-1">
+
+<pre class = 'prettyprint lang-python'>flights.head()
+#&gt;    Unnamed: 0  year         ...           minute            time_hour
+#&gt; 0           1  2013         ...               15  2013-01-01 05:00:00
+#&gt; 1           2  2013         ...               29  2013-01-01 05:00:00
+#&gt; 2           3  2013         ...               40  2013-01-01 05:00:00
+#&gt; 3           4  2013         ...               45  2013-01-01 05:00:00
+#&gt; 4           5  2013         ...                0  2013-01-01 06:00:00
+#&gt; 
+#&gt; [5 rows x 20 columns]</pre>
+
+<ul>
+<li>Note that we have a spurious column at the beginning,</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights.columns
+#&gt; Index([&#39;Unnamed: 0&#39;, &#39;year&#39;, &#39;month&#39;, &#39;day&#39;, &#39;dep_time&#39;, &#39;sched_dep_time&#39;,
+#&gt;        &#39;dep_delay&#39;, &#39;arr_time&#39;, &#39;sched_arr_time&#39;, &#39;arr_delay&#39;, &#39;carrier&#39;,
+#&gt;        &#39;flight&#39;, &#39;tailnum&#39;, &#39;origin&#39;, &#39;dest&#39;, &#39;air_time&#39;, &#39;distance&#39;, &#39;hour&#39;,
+#&gt;        &#39;minute&#39;, &#39;time_hour&#39;],
+#&gt;       dtype=&#39;object&#39;)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Exploring the Flights dataset</h2></hgroup><article  id="exploring-the-flights-dataset-2">
+
+<ul>
+<li>We can easily remove the <code>Unnamed: 0</code> column</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>del flights[&#39;Unnamed: 0&#39;]
+flights.columns
+#&gt; Index([&#39;year&#39;, &#39;month&#39;, &#39;day&#39;, &#39;dep_time&#39;, &#39;sched_dep_time&#39;, &#39;dep_delay&#39;,
+#&gt;        &#39;arr_time&#39;, &#39;sched_arr_time&#39;, &#39;arr_delay&#39;, &#39;carrier&#39;, &#39;flight&#39;,
+#&gt;        &#39;tailnum&#39;, &#39;origin&#39;, &#39;dest&#39;, &#39;air_time&#39;, &#39;distance&#39;, &#39;hour&#39;, &#39;minute&#39;,
+#&gt;        &#39;time_hour&#39;],
+#&gt;       dtype=&#39;object&#39;)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Selecting rows</h2></hgroup><article  id="selecting-rows">
+
+<ul>
+<li>We can easily extract rows by querying the dataset (similar do dplyr’s <code>filter</code>)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights.query(&quot;month == 1 &amp; day == 1 &amp; hour == 11 &amp; origin == &#39;EWR&#39;&quot;)
+#&gt;      year  month  day         ...           hour  minute            time_hour
+#&gt; 275  2013      1    1         ...             11      29  2013-01-01 11:00:00
+#&gt; 277  2013      1    1         ...             11      29  2013-01-01 11:00:00
+#&gt; 278  2013      1    1         ...             11      29  2013-01-01 11:00:00
+#&gt; 284  2013      1    1         ...             11      40  2013-01-01 11:00:00
+#&gt; 286  2013      1    1         ...             11      45  2013-01-01 11:00:00
+#&gt; 287  2013      1    1         ...             11      45  2013-01-01 11:00:00
+#&gt; 289  2013      1    1         ...             11      56  2013-01-01 11:00:00
+#&gt; 290  2013      1    1         ...             11      59  2013-01-01 11:00:00
+#&gt; 299  2013      1    1         ...             11      58  2013-01-01 11:00:00
+#&gt; 307  2013      1    1         ...             11      59  2013-01-01 11:00:00
+#&gt; 320  2013      1    1         ...             11      59  2013-01-01 11:00:00
+#&gt; 
+#&gt; [11 rows x 19 columns]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Selecting rows</h2></hgroup><article  id="selecting-rows-1">
+
+<ul>
+<li>Another way to select rows is by indexing and slicing</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights.iloc[:3] # all rows with indices smaller than 3
+#&gt;    year  month  day         ...           hour  minute            time_hour
+#&gt; 0  2013      1    1         ...              5      15  2013-01-01 05:00:00
+#&gt; 1  2013      1    1         ...              5      29  2013-01-01 05:00:00
+#&gt; 2  2013      1    1         ...              5      40  2013-01-01 05:00:00
+#&gt; 
+#&gt; [3 rows x 19 columns]</pre>
+
+<pre class = 'prettyprint lang-python'>flights.iloc[1009:1013] # rows 1009 to 1012
+#&gt;       year  month  day         ...           hour  minute            time_hour
+#&gt; 1009  2013      1    2         ...              8      10  2013-01-02 08:00:00
+#&gt; 1010  2013      1    2         ...              8       5  2013-01-02 08:00:00
+#&gt; 1011  2013      1    2         ...              8      20  2013-01-02 08:00:00
+#&gt; 1012  2013      1    2         ...              8       0  2013-01-02 08:00:00
+#&gt; 
+#&gt; [4 rows x 19 columns]</pre>
+
+</article></slide><slide class=""><hgroup><h2>Selecting columns</h2></hgroup><article  id="selecting-columns">
+
+<ul>
+<li>To select columns (like dplyr’s <code>select</code>) we can use their names. Notice the use of double brackets:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights[[&#39;origin&#39;, &#39;dest&#39;, &#39;month&#39;, &#39;day&#39;]].head()
+#&gt;   origin dest  month  day
+#&gt; 0    EWR  IAH      1    1
+#&gt; 1    LGA  IAH      1    1
+#&gt; 2    JFK  MIA      1    1
+#&gt; 3    JFK  BQN      1    1
+#&gt; 4    LGA  ATL      1    1</pre>
+
+</article></slide><slide class=""><hgroup><h2>Arraging by rows</h2></hgroup><article  id="arraging-by-rows">
+
+<ul>
+<li>Another dplyr analogue, this time to <code>arrange</code>:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'># Sorts the dataset in ascending order by the first variable. 
+# Additional columns are used to break ties
+flights.sort_values(by=[&#39;minute&#39;, &#39;day&#39;, &#39;month&#39;]).head()
+#&gt;    year  month  day         ...           hour  minute            time_hour
+#&gt; 4  2013      1    1         ...              6       0  2013-01-01 06:00:00
+#&gt; 6  2013      1    1         ...              6       0  2013-01-01 06:00:00
+#&gt; 7  2013      1    1         ...              6       0  2013-01-01 06:00:00
+#&gt; 8  2013      1    1         ...              6       0  2013-01-01 06:00:00
+#&gt; 9  2013      1    1         ...              6       0  2013-01-01 06:00:00
+#&gt; 
+#&gt; [5 rows x 19 columns]</pre>
+
+<ul>
+<li>To sort in descending order, just set argument <code>ascending = False</code> after the <code>by</code> list is finished.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Renaming variables</h2></hgroup><article  id="renaming-variables">
+
+<ul>
+<li>The <code>.rename</code> method is used to rename variables using a dictionary.</li>
+<li>Note that after renaming we are extracting a single column from our <code>DataFrame</code>, and printing only the first 5 elements.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights.rename(columns={&#39;tailnum&#39;: &#39;tail_num&#39;})[&#39;tail_num&#39;][0:5]
+#&gt; 0    N14228
+#&gt; 1    N24211
+#&gt; 2    N619AA
+#&gt; 3    N804JB
+#&gt; 4    N668DN
+#&gt; Name: tail_num, dtype: object</pre>
+
+</article></slide><slide class=""><hgroup><h2>Unique values and duplicates</h2></hgroup><article  id="unique-values-and-duplicates">
+
+<ul>
+<li>It is relatively simple to investigate unique values and remove duplicates:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights.origin.unique()
+#&gt; array([&#39;EWR&#39;, &#39;LGA&#39;, &#39;JFK&#39;], dtype=object)</pre>
+
+<pre class = 'prettyprint lang-python'>flights[[&#39;origin&#39;, &#39;dest&#39;]].drop_duplicates().shape
+#&gt; (224, 2)</pre>
+
+<ul>
+<li>Looks like this massive dataset was generated from a set of only 224 routes.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Creating new variables</h2></hgroup><article  id="creating-new-variables">
+
+<ul>
+<li>To add new columns calculated from the existing ones (i.e., dplyr’s <code>mutate</code>):</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights[&#39;gain&#39;] = flights.arr_delay - flights.dep_delay
+flights[&#39;gain_per_hour&#39;] = flights.gain / (flights.air_time / 60)
+flights[&#39;speed&#39;] = flights.distance / flights.air_time * 60
+flights.columns
+#&gt; Index([&#39;year&#39;, &#39;month&#39;, &#39;day&#39;, &#39;dep_time&#39;, &#39;sched_dep_time&#39;, &#39;dep_delay&#39;,
+#&gt;        &#39;arr_time&#39;, &#39;sched_arr_time&#39;, &#39;arr_delay&#39;, &#39;carrier&#39;, &#39;flight&#39;,
+#&gt;        &#39;tailnum&#39;, &#39;origin&#39;, &#39;dest&#39;, &#39;air_time&#39;, &#39;distance&#39;, &#39;hour&#39;, &#39;minute&#39;,
+#&gt;        &#39;time_hour&#39;, &#39;gain&#39;, &#39;gain_per_hour&#39;, &#39;speed&#39;],
+#&gt;       dtype=&#39;object&#39;)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Accessing specific columns</h2></hgroup><article  id="accessing-specific-columns">
+
+<ul>
+<li>There are two main ways of accessing specific columns for your calculations:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>flights[&#39;dep_delay&#39;].mean()
+#&gt; 12.639070257304708
+flights.dep_delay.mean()
+#&gt; 12.639070257304708</pre>
+
+</article></slide><slide class=""><hgroup><h2>Calculating grouped summaries</h2></hgroup><article  id="calculating-grouped-summaries">
+
+<ul>
+<li>Pandas also provides the ability to calculate group summaries (if only it had the pipe, <code>%&gt;%</code>, oh how good would it be!):</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>planes_df = flights.groupby(&#39;tailnum&#39;)
+delay = planes_df.agg({&quot;origin&quot;: &quot;count&quot;,
+                       &quot;distance&quot;: &quot;mean&quot;, 
+                       &quot;arr_delay&quot;: &quot;mean&quot;})
+delay.query(&quot;origin &gt; 365 &amp; distance &gt; 2000&quot;)
+#&gt;          origin     distance  arr_delay
+#&gt; tailnum                                
+#&gt; N327AA      387  2366.059432   1.170604
+#&gt; N328AA      393  2389.569975  -3.521851
+#&gt; N335AA      385  2362.846753  -1.759162
+#&gt; N338AA      388  2399.956186  -2.351562</pre>
+
+</article></slide><slide class=""><hgroup><h2>Using anonymous functions for summarisation</h2></hgroup><article  id="using-anonymous-functions-for-summarisation">
+
+<ul>
+<li>Python’s version of R’s <em>anonymous functions</em> are called <em>lambda functions</em>. They are essentially the same thing: temporary functions to be used once and then discarded.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>destinations = flights.groupby(&quot;origin&quot;)
+destinations.agg({
+    &#39;tailnum&#39;: lambda x: len(x.unique()), # how many distinct planes?
+    &#39;origin&#39;: &#39;count&#39;
+}).rename(columns={&#39;tailnum&#39;: &#39;planes&#39;, &#39;origin&#39;: &#39;flights&#39;})
+#&gt;         planes  flights
+#&gt; origin                 
+#&gt; EWR       3041   120835
+#&gt; JFK       1958   111279
+#&gt; LGA       2945   104662</pre>
+
+</article></slide><slide class=""><hgroup><h2>More on group summaries</h2></hgroup><article  id="more-on-group-summaries">
+
+<pre class = 'prettyprint lang-python'>daily = flights.groupby([&#39;year&#39;, &#39;month&#39;, &#39;day&#39;])
+per_day = daily[&#39;distance&#39;].count()
+per_day
+#&gt; year  month  day
+#&gt; 2013  1      1       842
+#&gt;              2       943
+#&gt;              3       914
+#&gt;              4       915
+#&gt;              5       720
+#&gt;              6       832
+#&gt;              7       933
+#&gt;              8       899
+#&gt;              9       902
+#&gt;              10      932
+#&gt;              11      930
+#&gt;              12      690
+#&gt;              13      828
+#&gt;              14      928
+#&gt;              15      894
+#&gt;              16      901
+#&gt;              17      927
+#&gt;              18      924
+#&gt;              19      674
+#&gt;              20      786
+#&gt;              21      912
+#&gt;              22      890
+#&gt;              23      897
+#&gt;              24      925
+#&gt;              25      922
+#&gt;              26      680
+#&gt;              27      823
+#&gt;              28      923
+#&gt;              29      890
+#&gt;              30      900
+#&gt;                     ... 
+#&gt;       12     2      1004
+#&gt;              3       973
+#&gt;              4       958
+#&gt;              5       969
+#&gt;              6       970
+#&gt;              7       691
+#&gt;              8       875
+#&gt;              9       962
+#&gt;              10      943
+#&gt;              11      954
+#&gt;              12      968
+#&gt;              13      970
+#&gt;              14      692
+#&gt;              15      880
+#&gt;              16      964
+#&gt;              17      949
+#&gt;              18      956
+#&gt;              19      974
+#&gt;              20      980
+#&gt;              21      811
+#&gt;              22      895
+#&gt;              23      985
+#&gt;              24      761
+#&gt;              25      719
+#&gt;              26      936
+#&gt;              27      963
+#&gt;              28      814
+#&gt;              29      888
+#&gt;              30      968
+#&gt;              31      776
+#&gt; Name: distance, Length: 365, dtype: int64</pre>
+
+</article></slide><slide class=""><hgroup><h2>More on group summaries</h2></hgroup><article  id="more-on-group-summaries-1">
+
+<ul>
+<li>To summarise a summary:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>per_month = per_day.groupby(level=[&#39;year&#39;, &#39;month&#39;]).sum()
+per_month
+#&gt; year  month
+#&gt; 2013  1        27004
+#&gt;       2        24951
+#&gt;       3        28834
+#&gt;       4        28330
+#&gt;       5        28796
+#&gt;       6        28243
+#&gt;       7        29425
+#&gt;       8        29327
+#&gt;       9        27574
+#&gt;       10       28889
+#&gt;       11       27268
+#&gt;       12       28135
+#&gt; Name: distance, dtype: int64</pre>
+
+</article></slide><slide class=""><hgroup><h2>Handling missing data</h2></hgroup><article  id="handling-missing-data">
+
+<ul>
+<li>The way in which Pandas handles missing values is constrained by its reliance on the NumPy package, which does not have a built-in notion of NA values for non-floating point data types.</li>
+<li>Without going into the technical discussions, Pandas essentially employs two already-existing Python null values for representing missing data: the special floating-point <code>NaN</code> value, and the Python <code>None</code> object. This has some side effects, but in practice it is generally a good way to represent missing data in most cases of interest.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>The <code>None</code> type</h2></hgroup><article  id="the-none-type">
+
+<ul>
+<li>The first <code>NA</code> value used by Pandas is <code>None</code>, a Python singleton object that is often used for missing data in general Python code.</li>
+<li>Because it is a Python object, <code>None</code> cannot be used in any arbitrary NumPy/Pandas array, but only in arrays with <code>dtype=object</code> (i.e., arrays of Python objects). This essentially means that operations on the data will be done at the Python level (instead of the optimised NumPy C code), which generally means (much) slower.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>vals1 = np.array([1, None, 3, 4])
+vals1
+#&gt; array([1, None, 3, 4], dtype=object)</pre>
+
+</article></slide><slide class=""><hgroup><h2>The <code>None</code> type</h2></hgroup><article  id="the-none-type-1">
+
+<ul>
+<li>The use of Python objects in an array also means that if you perform aggregations like <code>sum()</code> or <code>min()</code> across an array with a <code>None</code> value, you will generally get an error:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>vals1.sum()
+#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): TypeError: unsupported operand type(s) for +: &#39;int&#39; and &#39;NoneType&#39;
+#&gt; 
+#&gt; Detailed traceback: 
+#&gt;   File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;
+#&gt;   File &quot;/anaconda3/lib/python3.7/site-packages/numpy/core/_methods.py&quot;, line 36, in _sum
+#&gt;     return umr_sum(a, axis, dtype, out, keepdims, initial)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Missing numerical data: <code>NaN</code></h2></hgroup><article  id="missing-numerical-data-nan">
+
+<ul>
+<li>The other missing data representation, <code>NaN</code>, is a special floating-point value recognized by all systems that use the standard IEEE floating-point representation.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>vals2 = np.array([1, np.nan, 3, 4]) 
+vals2.dtype
+#&gt; dtype(&#39;float64&#39;)</pre>
+
+<ul>
+<li>NumPy detects <code>NaN</code> as a native floating-point type in the array: this array therefore supports the fast NumPy operations executed in compiled code.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Missing numerical data: <code>NaN</code></h2></hgroup><article  id="missing-numerical-data-nan-1">
+
+<ul>
+<li>Just like R’s <code>NA</code>, NumPy’s <code>NaN</code> is also like the common cold: highly contageous and mildly annoying at times.</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>vals2.mean()
+#&gt; nan
+1 + 2 + np.nan
+#&gt; nan</pre>
+
+<pre class = 'prettyprint lang-python'># But there are NaN-resistent versions :)
+np.nanmin(vals2)
+#&gt; 1.0
+np.nanmean(vals2)
+#&gt; 2.6666666666666665</pre>
+
+</article></slide><slide class=""><hgroup><h2><code>NaN</code> and <code>None</code> in Pandas</h2></hgroup><article  id="nan-and-none-in-pandas">
+
+<ul>
+<li>Pandas is built to handle <code>NaN</code> and <code>None</code> almost interchangeably, converting between them where appropriate:</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>pd.Series([&quot;a&quot;, np.nan, &quot;c&quot;, None])
+#&gt; 0       a
+#&gt; 1     NaN
+#&gt; 2       c
+#&gt; 3    None
+#&gt; dtype: object
+pd.Series([1, np.nan, 2, None])
+#&gt; 0    1.0
+#&gt; 1    NaN
+#&gt; 2    2.0
+#&gt; 3    NaN
+#&gt; dtype: float64</pre>
+
+</article></slide><slide class=""><hgroup><h2>Dealing with null values in Pandas</h2></hgroup><article  id="dealing-with-null-values-in-pandas">
+
+<ul>
+<li>There are several useful methods for detecting, removing, and replacing null (<code>None</code> or <code>NaN</code>) values in Pandas data structures. These are:
+
+<ul>
+<li><code>isnull()</code>, generates a boolean mask indicating missing values</li>
+<li><code>notnull()</code>, generates a boolean mask indicating <strong>non-</strong>missing values</li>
+<li><code>dropna()</code>, returns a filtered version of the data</li>
+<li><code>fillna()</code>, returns a copy of the data with missing values filled or imputed</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Dealing with null values in Pandas</h2></hgroup><article  id="dealing-with-null-values-in-pandas-1">
+
+<pre class = 'prettyprint lang-python'>tmp1 = flights.arr_delay.tail(10) # 10 last values of arr_delay
+tmp2 = flights.dep_time.tail(10).isnull()
+tmp3 = flights.dep_time.tail(10).notnull()
+pd.DataFrame({&#39;Vals&#39; : tmp1, &#39;Mask&#39; : tmp2, &#39;NotMask&#39; : tmp3})
+#&gt;         Vals   Mask  NotMask
+#&gt; 336766 -20.0  False     True
+#&gt; 336767 -16.0  False     True
+#&gt; 336768   1.0  False     True
+#&gt; 336769 -25.0  False     True
+#&gt; 336770   NaN   True    False
+#&gt; 336771   NaN   True    False
+#&gt; 336772   NaN   True    False
+#&gt; 336773   NaN   True    False
+#&gt; 336774   NaN   True    False
+#&gt; 336775   NaN   True    False</pre>
+
+</article></slide><slide class=""><hgroup><h2>Dealing with null values in Pandas</h2></hgroup><article  id="dealing-with-null-values-in-pandas-2">
+
+<pre class = 'prettyprint lang-python'>flights.arr_delay.tail(15)[7:11]
+#&gt; 336768     1.0
+#&gt; 336769   -25.0
+#&gt; 336770     NaN
+#&gt; 336771     NaN
+#&gt; Name: arr_delay, dtype: float64</pre>
+
+<pre class = 'prettyprint lang-python'>flights.arr_delay.tail(15)[7:11].dropna()
+#&gt; 336768     1.0
+#&gt; 336769   -25.0
+#&gt; Name: arr_delay, dtype: float64</pre>
+
+<ul>
+<li>Alternatively, you can drop null values along a different axis (using <code>axis=1</code> to drop columns containing a null), drop only rows/columns with all values missing (using <code>how=&#39;all&#39;</code>) or with more than a given number of nulls (using e.g., <code>thres=5</code>).</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Dealing with null values in Pandas</h2></hgroup><article  id="dealing-with-null-values-in-pandas-3">
+
+<pre class = 'prettyprint lang-python'>tmp1 = pd.Series([-1, np.nan, None, 2])
+tmp1.fillna(0) # fill with fixed value
+#&gt; 0   -1.0
+#&gt; 1    0.0
+#&gt; 2    0.0
+#&gt; 3    2.0
+#&gt; dtype: float64
+tmp1.fillna(method = &#39;ffill&#39;) # forward-fill
+#&gt; 0   -1.0
+#&gt; 1   -1.0
+#&gt; 2   -1.0
+#&gt; 3    2.0
+#&gt; dtype: float64
+tmp1.fillna(method = &#39;bfill&#39;) # back-fill
+#&gt; 0   -1.0
+#&gt; 1    2.0
+#&gt; 2    2.0
+#&gt; 3    2.0
+#&gt; dtype: float64</pre>
+
+</article></slide><slide class=""><hgroup><h2>Summary</h2></hgroup><article  id="summary">
+
+<ul>
+<li>Pandas <code>DataFrame</code>s are a versatile data object that can be quite useful (and quite computationally efficient) for some of the most common data analysis summarisation activities.</li>
+<li>Dealing with missing data is relatively straightforward, both in terms of removing and imputing values.</li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

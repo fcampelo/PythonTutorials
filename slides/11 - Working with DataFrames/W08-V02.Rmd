@@ -1,0 +1,282 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Working with DataFrames
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = FALSE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+reticulate::use_python("/anaconda3/bin/python3", required = FALSE)
+```
+
+## Overview
+- Methods for Pandas `DataFrame` objects
+- Grouped summaries
+- Missing data
+  <br><br>
+- Acknowledgments
+  - Some of the examples in this unit are taken from: [Python Crash Course - A Hands-on, Project-based, introduction to programming](https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036)
+  - This slide deck is heavily inspired on Jake VanderPlas' _Python Data Science Handbook_,  [Chapter 3](https://jakevdp.github.io/PythonDataScienceHandbook/03.00-introduction-to-pandas.html)
+  - This unit was created with the support of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  
+## Pandas' `DataFrames`
+- In the previous video we saw that Pandas' `DataFrame` object generalises 2D NumPy arrays (and also Python dictionaries), allowing us to represent data tables in a conveniently indexed format. 
+- `DataFrame` objects come equipped with a wealth of mathematican and statistical summary functions and methods, as well as other data manipulation tools that can make life easier for the data scientist. In this video we'll explore some of these.
+
+## Starting simple
+- Let's start creating a simple dataset to explore some of these methods:
+```{python}
+import numpy as np
+import pandas as pd
+data = {'name': ['Jason', 'Molly', 'Tina', 'Jake', 'Amy'], 
+        'age': [42, 52, 36, 24, 73], 
+        'preTestScore': [4, 24, 31, 2, 3],
+        'postTestScore': [25, 94, 57, 62, 70]}
+        
+df = pd.DataFrame(data) # Convention - "df" stands for "DataFrame"
+print(df)
+```
+
+## Simple operations
+- We can use the `DataFrame` methods to calculate simple summaries and operations on the data. For instance, the range of ages:
+```{python}
+[df['age'].min(), df['age'].max()]
+```
+- Note we are pointing to one column and then applying a function to that column. Other available methods include `.sum()`, `.cumsum()`, `.prod()`, etc.. (if it looks like NumPy, then congratulations - you've been paying attention!)
+```{python}
+# Average PreTest score
+df['preTestScore'].mean()
+```
+
+## Simple operations
+- All summary statistics for a particular column:
+```{python}
+df['preTestScore'].describe()
+```
+- These can also be obtained isolately with `.count()`, `.min()`, `.max()`, `.median()`, `.mean()`, `quantile()`, etc. Other summary statistics, such as `.skew()` and `.kurt()` are also available.
+
+## Simple operations
+- For a purely numerical `DataFrame` we can treat it as a matrix and calculate, e.g., correlation and covariance matrices for the variables:
+```{python}
+df.corr()
+```
+```{python}
+df.cov()
+```
+
+## Exploring the Flights dataset
+- We can now start moving to a larger dataset, our old friend `flights` that we used to explore `dplyr` and `ggplot2` in our R slides. Since we do not have it conveniently included as part of one of our packages, we'll have to read it from a .CSV:
+```{python}
+flights = pd.read_csv("./data/flights.csv")
+# Output the dimensions of this dataframe (rows and columns).
+flights.shape
+```
+
+## Exploring the Flights dataset
+```{python}
+flights.head()
+```
+- Note that we have a spurious column at the beginning,
+```{python}
+flights.columns
+```
+
+## Exploring the Flights dataset
+- We can easily remove the `Unnamed: 0` column
+```{python}
+del flights['Unnamed: 0']
+flights.columns
+```
+
+## Selecting rows
+- We can easily extract rows by querying the dataset (similar do dplyr's `filter`)
+```{python}
+flights.query("month == 1 & day == 1 & hour == 11 & origin == 'EWR'")
+```
+
+## Selecting rows
+- Another way to select rows is by indexing and slicing
+```{python}
+flights.iloc[:3] # all rows with indices smaller than 3
+```
+```{python}
+flights.iloc[1009:1013] # rows 1009 to 1012
+```
+
+## Selecting columns
+- To select columns (like dplyr's `select`) we can use their names. Notice the use of double brackets:
+```{python}
+flights[['origin', 'dest', 'month', 'day']].head()
+```
+
+## Arraging by rows
+- Another dplyr analogue, this time to `arrange`:
+```{python}
+# Sorts the dataset in ascending order by the first variable. 
+# Additional columns are used to break ties
+flights.sort_values(by=['minute', 'day', 'month']).head()
+```
+- To sort in descending order, just set argument `ascending = False` after the `by` list is finished.
+
+## Renaming variables
+- The `.rename` method is used to rename variables using a dictionary. 
+- Note that after renaming we are extracting a single column from our `DataFrame`, and printing only the first 5 elements.
+```{python}
+flights.rename(columns={'tailnum': 'tail_num'})['tail_num'][0:5]
+```
+
+## Unique values and duplicates
+- It is relatively simple to investigate unique values and remove duplicates:
+```{python}
+flights.origin.unique()
+```
+```{python}
+flights[['origin', 'dest']].drop_duplicates().shape
+```
+- Looks like this massive dataset was generated from a set of only 224 routes.
+
+## Creating new variables
+- To add new columns calculated from the existing ones (i.e., dplyr's `mutate`):
+```{python}
+flights['gain'] = flights.arr_delay - flights.dep_delay
+flights['gain_per_hour'] = flights.gain / (flights.air_time / 60)
+flights['speed'] = flights.distance / flights.air_time * 60
+flights.columns
+```
+
+## Accessing specific columns
+- There are two main ways of accessing specific columns for your calculations:
+```{python}
+flights['dep_delay'].mean()
+flights.dep_delay.mean()
+```
+
+## Calculating grouped summaries
+- Pandas also provides the ability to calculate group summaries (if only it had the pipe, `%>%`, oh how good would it be!):
+```{python}
+planes_df = flights.groupby('tailnum')
+delay = planes_df.agg({"origin": "count",
+                       "distance": "mean", 
+                       "arr_delay": "mean"})
+delay.query("origin > 365 & distance > 2000")
+```
+
+## Using anonymous functions for summarisation
+- Python's version of R's _anonymous functions_ are called _lambda functions_. They are essentially the same thing: temporary functions to be used once and then discarded.
+```{python}
+destinations = flights.groupby("origin")
+destinations.agg({
+    'tailnum': lambda x: len(x.unique()), # how many distinct planes?
+    'origin': 'count'
+}).rename(columns={'tailnum': 'planes', 'origin': 'flights'})
+```
+
+## More on group summaries
+```{python}
+daily = flights.groupby(['year', 'month', 'day'])
+per_day = daily['distance'].count()
+per_day
+```
+
+## More on group summaries
+- To summarise a summary:
+```{python}
+per_month = per_day.groupby(level=['year', 'month']).sum()
+per_month
+```
+
+## Handling missing data
+- The way in which Pandas handles missing values is constrained by its reliance on the NumPy package, which does not have a built-in notion of NA values for non-floating point data types.
+- Without going into the technical discussions, Pandas essentially employs two already-existing Python null values for representing missing data: the special floating-point `NaN` value, and the Python `None` object. This has some side effects, but in practice it is generally a good way to represent missing data in most cases of interest.
+
+## The `None` type
+- The first `NA` value used by Pandas is `None`, a Python singleton object that is often used for missing data in general Python code. 
+- Because it is a Python object, `None` cannot be used in any arbitrary NumPy/Pandas array, but only in arrays with `dtype=object` (i.e., arrays of Python objects). This essentially means that operations on the data will be done at the Python level (instead of the optimised NumPy C code), which generally means (much) slower.
+```{python}
+vals1 = np.array([1, None, 3, 4])
+vals1
+```
+
+## The `None` type
+- The use of Python objects in an array also means that if you perform aggregations like `sum()` or `min()` across an array with a `None` value, you will generally get an error:
+```{python, error = TRUE}
+vals1.sum()
+```
+
+## Missing numerical data: `NaN`
+- The other missing data representation, `NaN`, is a special floating-point value recognized by all systems that use the standard IEEE floating-point representation. 
+```{python}
+vals2 = np.array([1, np.nan, 3, 4]) 
+vals2.dtype
+```
+- NumPy detects `NaN` as a native floating-point type in the array: this array therefore supports the fast NumPy operations executed in compiled code.
+
+## Missing numerical data: `NaN`
+- Just like R's `NA`, NumPy's `NaN` is also like the common cold: highly contageous and mildly annoying at times.
+```{python,warning=FALSE}
+vals2.mean()
+1 + 2 + np.nan
+```
+```{python,warning=FALSE}
+# But there are NaN-resistent versions :)
+np.nanmin(vals2)
+np.nanmean(vals2)
+```
+
+## `NaN` and `None` in Pandas
+- Pandas is built to handle `NaN` and `None` almost interchangeably, converting between them where appropriate:
+```{python}
+pd.Series(["a", np.nan, "c", None])
+pd.Series([1, np.nan, 2, None])
+```
+
+## Dealing with null values in Pandas
+- There are several useful methods for detecting, removing, and replacing null (`None` or `NaN`) values in Pandas data structures. These are:
+  - `isnull()`, generates a boolean mask indicating missing values
+  - `notnull()`, generates a boolean mask indicating **non-**missing values
+  - `dropna()`, returns a filtered version of the data
+  - `fillna()`, returns a copy of the data with missing values filled or imputed
+
+## Dealing with null values in Pandas
+```{python}
+tmp1 = flights.arr_delay.tail(10) # 10 last values of arr_delay
+tmp2 = flights.dep_time.tail(10).isnull()
+tmp3 = flights.dep_time.tail(10).notnull()
+pd.DataFrame({'Vals' : tmp1, 'Mask' : tmp2, 'NotMask' : tmp3})
+```
+
+## Dealing with null values in Pandas
+```{python}
+flights.arr_delay.tail(15)[7:11]
+```
+```{python}
+flights.arr_delay.tail(15)[7:11].dropna()
+```
+- Alternatively, you can drop null values along a different axis (using `axis=1` to drop  columns containing a null), drop only rows/columns with all values missing (using `how='all'`) or with more than a given number of nulls (using e.g., `thres=5`).
+
+## Dealing with null values in Pandas
+```{python}
+tmp1 = pd.Series([-1, np.nan, None, 2])
+tmp1.fillna(0) # fill with fixed value
+tmp1.fillna(method = 'ffill') # forward-fill
+tmp1.fillna(method = 'bfill') # back-fill
+```
+
+## Summary
+- Pandas `DataFrame`s are a versatile data object that can be quite useful (and quite computationally efficient) for some of the most common data analysis summarisation activities.
+- Dealing with missing data is relatively straightforward, both in terms of removing and imputing values.

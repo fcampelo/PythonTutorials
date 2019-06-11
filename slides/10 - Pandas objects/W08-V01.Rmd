@@ -1,0 +1,253 @@
+---
+author: "Dr. Felipe Campelo<br/>Aston University"
+title: Introduction to Pandas
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/Aston_logo.png
+    self_contained: no
+    incremental: false
+---
+
+```{r,echo=FALSE}
+set.seed(42)
+options(digits = 3)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  cache = FALSE,
+  out.width = "60%",
+  fig.align = 'center',
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+reticulate::use_python("/anaconda3/bin/python3", required = FALSE)
+```
+
+## Overview
+- Introduction to Pandas
+- `Series` objects
+- `DataFrame` objects
+- `Index` objects
+- Selection and Indexing
+  <br><br>
+- Acknowledgments
+  - Some of the examples in this unit are taken from: [Python Crash Course - A Hands-on, Project-based, introduction to programming](https://www.amazon.co.uk/Python-Crash-Course-Hands-Project-Based/dp/1593276036)
+  - This slide deck is heavily inspired on Jake VanderPlas' _Python Data Science Handbook_,  [Chapter 3](https://jakevdp.github.io/PythonDataScienceHandbook/03.00-introduction-to-pandas.html)
+  - This unit was created with the immense help of [Mr. Jomar Alcantara](https://github.com/joealcantara/) from Aston University, UK.
+  
+## What is Pandas
+- Pandas is a package built on top of NumPy, which provides an efficient implementation of a data frame (or, as it is called in Pandas, a `DataFrame`).
+- Similarly to R's data frames / tibbles, Pandas' DataFrames are multidimensional arrays with attached row and column labels, can contain heterogeneous data types and missing data.
+- Pandas also implements a number of powerful data operations which will feel very familiar to our `dplyr`-trained eyes.
+- Besides `DataFrame`, Pandas also provides other powerful data objects: `Series` and `Index`.
+
+## `Series` objects
+- A Pandas `Series` is a one-dimensional array of indexed data. It can be easily created from a list or array.
+
+```{python}
+import numpy as np  # using aliases for code brevity
+import pandas as pd
+mydata = pd.Series([.0, .5, 1.])
+print(mydata)
+```
+- Notice that the `Series` explicitly includes stores data as `<index-value>` pairs. Indices can be used to access the values.
+  
+## `Series` objects
+```{python}
+mydata.values
+```
+```{python}
+mydata.index
+```
+- The index is an array-like object of type `pd.Index`. Values in a Series object (which, it should be clear by now, generalises the basic 1D NumPy array) can be accessed the intuitive way:
+```{python}
+mydata[0]
+```
+
+## `Series` objects
+- The essential difference between a `Series` and a NumPy 1D array is the index: 
+  - The NumPy Array has an (implicitly defined) integer index used to access the values
+  - The Pandas Series has an (explicitly defined) index associated with the values.
+- This gives `Series` objects additional capabilities, e.g., generalising the index to any type:
+```{python}
+import pandas as pd
+mydata = pd.Series(data = [0.25, 0.5, 0.75], index=['1Q', '2Q', '3Q'])
+mydata['2Q']
+```
+
+## `Series` objects
+- It is also possible to see `Series` as a specialised Python dictionary: a dictionary maps arbitrary keys to a set of arbitrary values, and a `Series` maps typed keys to a set of typed values. 
+- The _typing_ of the keys and values is important: the type information of `Series` makes it much more efficient than Python dictionaries for certain operations.
+```{python}
+user_dict = {'login': 'fcampelo', 'first': 'felipe', 'last': 'campelo'}
+user_series = pd.Series(user_dict)
+user_series
+```
+
+## `Series` objects
+- Unlike a dictionary, you can do slicing on `Series`:
+```{python}
+user_series['first':]
+```
+
+## `DataFrame` objects
+- Another fundamental structure in Pandas is the `DataFrame`, which is possibly one of the most usefult for data science. In a sense it is similar to R's `data.frame` or `tibble` objects, but with some important differences. 
+- Like the `Series` objects, the `DataFrame` can also be seen as generalised 2D NumPy array or, alternatively, as a specialised Python dictionary. 
+
+## `DataFrame` objects
+- A `DataFrame` can be seen as an analog of a 2D NumPy array, with flexible row indices and column names.
+- It may be useful to think of a DataFrame as a sequence of Series objects that share the same index - i.e., that are, in a sense, aligned.
+```{python}
+area = pd.Series({'CA': 423967, 'TX': 695662, 'NY': 141297})
+population = pd.Series({'CA': 38332521, 'TX': 26448193, 'NY': 19651127})
+mydata = pd.DataFrame({'population': population, 'area': area})
+
+# This will look familiar :)
+mydata
+```
+
+## `DataFrame` objects
+- Like `Series`, the `DataFrame` has an `index` attribute that gives access to the row (observation) labels. Additionally, it also has a `columns` attribute, which holds the column (variable) labels.
+```{python}
+print(mydata.index)
+print(mydata.columns)
+```
+- In this way it can be seen as a generalised 2D NumPy array, where both rows and columns have a (generalised) index for accessing the data.
+
+## `DataFrame` objects
+- We can also build a `DataFrame` from a dictionary (or a list of dictionaries, a dictionary of `Series`, a 2D NumPy array, etc.)
+```{python}
+data = {'name': ['Jason', 'Molly', 'Tina', 'Jake', 'Amy'], 
+        'age': [42, 52, 36, 24, 73], 
+        'preTestScore': [4, 24, 31, 2, 3],
+        'postTestScore': [25, 94, 57, 62, 70]}
+df = pd.DataFrame(data)
+df
+```
+
+## `Index` objects
+- The third type of Pandas object is the `Index`. Both `Series` and `DataFrame` objects contain an explicit index that lets you reference and modify data. 
+- This `Index` object can be thought of either as an immutable array or as an ordered (multi-)set, which results in some interesting operations that can be performed on these objects.
+
+## `Index` objects
+- Building an `Index` object is easy:
+```{python}
+ind = pd.Index([1, 1, 2, 3, 5, 8, 13])
+ind
+```
+- We can use standard Python indexing notation to retrieve values or slices:
+```{python}
+ind[3]
+ind[1::2]
+```
+
+## `Index` objects
+- Index objects also have many of the attributes familiar from NumPy arrays
+- One important difference between Index objects and NumPy arrays is that indices are **immutable**, which means that they cannot be modified as an array would:
+```{python,error=TRUE}
+print(ind.size, ind.shape, ind.ndim, ind.dtype)
+ind[0] = 0
+```
+
+## `Index` objects
+- As we're going to see in future slides, Pandas is in many ways similar to R's dplyr package. Its objects are designed to facilitate operations such as joins across datasets, and as such unions, intersections, differences, and other combinations of datasets can be computed relatively easily. For instance:
+```{python,error=TRUE}
+ind2 = pd.Index(np.arange(0,7))
+ind & ind2 # intersection
+```
+```{python,error=TRUE}
+ind | ind2 # union
+```
+- These operations may also be accessed via object methods, for example `ind.intersection(ind2)`
+
+## Indexing in `Series`
+- The slicing and indexing conventions in `Series` can be a source of confusion. For example, if the `Series` has an explicit integer index, an indexing operation such as `data[1]` will use the explicit indices, while a slicing operation like `data[1:3]` will use the implicit, Python-style index:
+```{python}
+mydata = pd.Series(data = ['a', 'b', 'c', 'd'], index=[3, 2, 1, 0])
+mydata[0]   # explicit index when indexing
+mydata[0:2] # implicit index when slicing
+```
+
+## Indexing in `Series`
+- Because of this potential confusion, Pandas provides some special indexer attributes that explicitly expose certain indexing schemes. These are not functional methods, but attributes that expose a particular slicing interface to the data in the Series.
+- The `loc` attribute allows indexing and slicing that **always** reference the explicit index:
+```{python}
+mydata.loc[0]
+mydata.loc[0:2]
+mydata.loc[0:2:-1]
+```
+
+## Indexing in `Series`
+- The `iloc` attribute allows indexing and slicing that **always** reference the implicit, Python-style index:
+```{python}
+mydata.iloc[0]
+mydata.iloc[0:2]
+```
+
+## Data Selection in `DataFrames`
+- Recall that a `DataFrame` acts in many ways like a 2D array, and in other ways like a dictionary of `Series` structures sharing a common index. First, let's rebuild the US States population data frame:
+```{python}
+area = pd.Series({'CA': 423967, 'TX': 695662, 'NY': 141297})
+population = pd.Series({'CA': 38332521, 'TX': 26448193, 'NY': 19651127})
+mydata = pd.DataFrame({'population': population, 'area': area})
+```
+
+## Data Selection in `DataFrames`
+- The individual `Series` that make up the columns of the `DataFrame` can be accessed via:
+```{python}
+mydata['population']
+mydata.population
+```
+- Though the ".column" notation is useful, it does not always work! If the column names are not strings, or if they conflict with methods of the `DataFrame`, this attribute-style access is not possible.
+
+## Data Selection in `DataFrames`
+- We can create new variables easily using this notation
+```{python}
+mydata['density'] = mydata['population'] / mydata['area']
+mydata
+```
+
+## Data Selection in `DataFrames`
+- The raw underlying data array in a `DataFrame` can be examined using the `.values` attribute. This 2D array aspect of the `DataFrame` makes many familiar array-like operations possible on the `DataFrame` itself.
+```{python}
+mydata.values
+```
+```{python}
+mydata.T # E.g. we can transpose the dataframe
+```
+
+## Indexing in `DataFrames`
+- When it comes to indexing of DataFrame objects, however, the dictionary-style indexing of columns precludes our ability to simply treat it as a NumPy array. In particular, passing a single index to an array accesses a row, but for a DataFrame we get a column instead.
+```{python}
+mydata.values[0]
+```
+```{python}
+mydata['population']
+```
+
+## Indexing in `DataFrames`
+- For array-style indexing of `DataFrame`s we can use the `loc`, `iloc`, and `ix` indexers.
+- Using `iloc` we index the underlying array as a simple NumPy array, but the DataFrame index and column labels are maintained:
+```{python}
+mydata.iloc[:2, 1]
+```
+
+## Indexing in `DataFrames`
+- Similarly, using `loc` we index the underlying data in an array-like style, but using the explicit index and column names instead:
+```{python}
+mydata.loc['TX':'NY', :'population']
+```
+
+## Indexing in `DataFrames`
+- Any of the NumPy-style data access patterns can be used within these indexers. 
+- For example, in the `loc` indexer we can combine masking and fancy indexing:
+```{python}
+mydata.loc[mydata.density > 100,      # Get places with density above 100
+           ['population', 'density']] # Select only these two columns
+```
+
+
+## Summary
+- Pandas implements objects that generalise Python / NumPy objects, which is useful for data analysis in a variety of ways
+- Indexing and accessing data in these objects is quite flexible, and can be done using dictionary-like or array-like indexer attributes.
